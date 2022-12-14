@@ -49,5 +49,11 @@ namespace Railway
             CityListForm cityListForm = new CityListForm();
             cityListForm.ShowDialog();
         }
+
+        private void станцииToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StationListForm sf = new StationListForm();
+            sf.ShowDialog();
+        }
     }
 }

@@ -53,6 +53,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CityChoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CityChoiceForm.Designer.cs">
+      <DependentUpon>CityChoiceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CityItemForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,18 @@
     <Compile Include="Forms\CountryListForm.Designer.cs">
       <DependentUpon>CountryListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\StationDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StationDetailForm.Designer.cs">
+      <DependentUpon>StationDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\StationListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\StationListForm.Designer.cs">
+      <DependentUpon>StationListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TicketForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +108,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CityChoiceForm.resx">
+      <DependentUpon>CityChoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CityItemForm.resx">
       <DependentUpon>CityItemForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -101,6 +122,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CountryListForm.resx">
       <DependentUpon>CountryListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StationDetailForm.resx">
+      <DependentUpon>StationDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\StationListForm.resx">
+      <DependentUpon>StationListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TicketForm.resx">
       <DependentUpon>TicketForm.cs</DependentUpon>
@@ -133,8 +160,14 @@
       <Name>Railway.Data</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Icons\" />
+    <Content Include="Icons\add_32.png" />
+    <Content Include="Icons\checked_32.png" />
+    <Content Include="Icons\delete_32.png" />
+    <Content Include="Icons\edit_32.png" />
+    <Content Include="Icons\exit.png" />
+    <Content Include="Icons\train.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

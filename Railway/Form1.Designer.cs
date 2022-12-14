@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -124,6 +125,7 @@
             this.станцииToolStripMenuItem.Name = "станцииToolStripMenuItem";
             this.станцииToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.станцииToolStripMenuItem.Text = "Станции";
+            this.станцииToolStripMenuItem.Click += new System.EventHandler(this.станцииToolStripMenuItem_Click);
             // 
             // типВагонаToolStripMenuItem
             // 
@@ -145,9 +147,10 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Билеты";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
