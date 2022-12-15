@@ -16,6 +16,7 @@ namespace Railway.DbUtils
 
         public static List<Country> Countries = new List<Country>();
         public static List<City> Cities = new List<City>();
+        public static List<Station> Stations = new List<Station>();
 
 
         static string _connectionString = Properties.Settings.Default.ConnectionString;
@@ -290,6 +291,16 @@ namespace Railway.DbUtils
             return false;
         }
 
+        public static City GetCity(int cityId)
+        {
+            SetCities();
+            foreach (var c in Cities)
+            {
+                if ( cityId == c.Id) return c;
+            }
+            return null;
+        }
+
         public static bool AddCity(string cityName, int countryId)
         {
             SqlConnection connection = null;
@@ -353,6 +364,173 @@ namespace Railway.DbUtils
             return false;
         }
         #endregion City
+
+        #region Station
+        public static void SetStations()
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+
+                if (connection == null) return;
+                Stations.Clear();
+                connection.Open();
+
+                string sql = @"SELECT TOP (1000) c1.[Id]
+      ,c1.[number]
+      ,c1.[Name] as StationName
+      ,c2.[Name] as CityName
+      ,c2.[Id] as CityId
+  FROM [Station] AS c1
+  JOIN City AS c2 ON c2.Id = c1.CityId";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object id = reader.GetValue(0);
+                    object number = reader.GetValue(1);
+                    object stationName = reader.GetValue(2);
+                    object cityName = reader.GetValue(3);
+                    object cityId = reader.GetValue(4);
+                    Station station = new Station()
+                    {
+                        Id = (int)id,
+                        Number = (int)number,
+                        Name = (string)stationName,
+                        CityName = cityName == DBNull.Value ? string.Empty : (string)cityName,
+                        CityId = cityId==DBNull.Value?0: (int)cityId
+                    };
+                    Stations.Add(station);
+                }
+            }
+            catch (SqlException e1)
+            {
+                MessageBox.Show(e1.Message);
+            }
+            catch (Exception e2)
+            {
+                MessageBox.Show(e2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+
+        }
+
+        public static bool UpdateStation(Station newStation)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                SqlCommand updateCommand = new SqlCommand("Update Station SET Number = @StationNumber, Name = @StationName, City = @CityId WHERE Id = @StationId", connection);
+                updateCommand.Parameters.Add("@StationNumber", SqlDbType.Int, sizeof(int), "Number");
+                updateCommand.Parameters.Add("@StationName", SqlDbType.NVarChar, 255, "Name");
+                updateCommand.Parameters.Add("@CityId", SqlDbType.Int, sizeof(int), "CityId");
+                updateCommand.Parameters.Add("@StationId", SqlDbType.Int, sizeof(int), "Id");
+                updateCommand.Parameters[0].Value = newStation.Number;
+                updateCommand.Parameters[1].Value = newStation.Name;
+                updateCommand.Parameters[2].Value = newStation.CityId;
+                updateCommand.Parameters[3].Value = newStation.Id;
+
+                var count = updateCommand.ExecuteNonQuery();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+        public static bool CheckExistsStation(string stationName)
+        {
+            SetCities();
+            foreach (var c in Stations)
+            {
+                if (stationName.Equals(c.Name)) return true;
+            }
+            return false;
+        }
+
+        public static bool AddStation(int number, string stationName, int cityId)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                SqlCommand insertCommand = new SqlCommand("INSERT INTO Station (number, name, cityId) VALUES ( @StationNumber, @StationName, @CityId) ", connection);
+                insertCommand.Parameters.Add("@StationNumber", SqlDbType.Int, sizeof(int), "StationNumber");
+                insertCommand.Parameters.Add("@StationName", SqlDbType.NVarChar, 255, "Name");
+                insertCommand.Parameters.Add("@CityId", SqlDbType.Int, sizeof(int), "CityId");
+                insertCommand.Parameters[0].Value = number;
+                insertCommand.Parameters[1].Value = stationName;
+                insertCommand.Parameters[2].Value = cityId;
+
+                var count = insertCommand.ExecuteNonQuery();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+
+        public static bool DeleteStation(int id)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                SqlCommand deleteCommand = new SqlCommand("DELETE FROM Station WHERE Id =  @Id ");
+                deleteCommand.Parameters.Add("@Id", SqlDbType.Int, 255, "Id");
+                deleteCommand.Parameters[0].Value = id;
+                deleteCommand.Connection = connection;
+
+                var count = deleteCommand.ExecuteNonQuery();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+        #endregion Station
 
     }
 }
