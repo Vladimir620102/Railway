@@ -18,13 +18,13 @@ namespace Railway
         public Form1()
         {
             InitializeComponent();
-             _dbContext = new DbContext();
+            // _dbContext = new DbContext();
         }
 
         private void btTicket_Click(object sender, EventArgs e)
         {
-            TicketForm tf = new TicketForm();
-            tf.ShowDialog();
+            TicketForm ticketForm = new TicketForm();
+            ticketForm.ShowDialog();
         }
 
         private void выходToolStripMenuItem_Click(object sender, EventArgs e)
@@ -34,8 +34,8 @@ namespace Railway
 
         private void билетToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TicketForm tf = new TicketForm();
-            tf.ShowDialog();
+            TicketForm ticketForm = new TicketForm();
+            ticketForm.ShowDialog();
         }
 
         private void miCountry_Click(object sender, EventArgs e)
@@ -60,6 +60,12 @@ namespace Railway
         {
             RouteListForm routeListForm = new RouteListForm();
             routeListForm.ShowDialog();
+        }
+
+        private void поездаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TrainListForm trainListForm = new TrainListForm();
+            trainListForm.ShowDialog();
         }
     }
 }

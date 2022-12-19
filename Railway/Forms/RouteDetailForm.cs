@@ -220,7 +220,7 @@ namespace Railway.Forms
                 route.ArrivalStationId = ((Station)cbArrival.SelectedItem).Id;
                 route.ArrivalStationName = ((Station)cbArrival.SelectedItem).Name;
                 route.Number = Convert.ToInt32(tbNumber.Text);
-                route.Name = $"Поезд № {tbNumber.Text} {((Station)cbDeparture.SelectedItem).Name} - {((Station)cbArrival.SelectedItem).Name}";
+                //route.Name = $"Поезд № {tbNumber.Text} {((Station)cbDeparture.SelectedItem).Name} - {((Station)cbArrival.SelectedItem).Name}";
                 if(CurrentRoute != null)
                 route.Id = CurrentRoute.Id;
 

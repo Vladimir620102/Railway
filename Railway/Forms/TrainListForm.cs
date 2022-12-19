@@ -17,6 +17,25 @@ namespace Railway.Forms
         public TrainListForm()
         {
             InitializeComponent();
+            SetRoutes();
+        }
+
+        private void SetRoutes()
+        {
+            try
+            {
+                DbContext.SetRoutes();
+                cbRoute.Items.Clear();
+                foreach (var r in DbContext.Routes)
+                {
+                    cbRoute.Items.Add(r);
+                }
+                cbRoute.DisplayMember= "Name";
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void cbRoute_SelectedValueChanged(object sender, EventArgs e)
@@ -45,23 +64,45 @@ namespace Railway.Forms
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-            var row = dataGridView1.CurrentRow;
-            if(row==null) return;
-            if(row.Cells[0].Value == null) return;
-            int id = (int)row.Cells[0].Value;
-            DbContext.DeleteTrain(id);
+            var r = (Route)cbRoute.SelectedItem;
+            if (r == null)
+            {
+                MessageBox.Show("Не выбран маршрут");
+                return;
+            }
+
+            try
+            {
+                var row = dataGridView1.CurrentRow;
+                if (row == null) return;
+                if (row.Cells[0].Value == null) return;
+                int id = (int)row.Cells[0].Value;
+                DbContext.DeleteTrain(id);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            UpdateGrid(r.Id);
         }
 
         void UpdateGrid(int routeId)
         {
-            SetTrains(routeId);
-            dataGridView1.Rows.Clear();
-            foreach (var t in DbContext.Trains)
+            try
             {
-                dataGridView1.Rows.Add(t.Id, t.Number,
-                    t.DepartureStationId, t.DepartureStationName,
-                    t.ArrivalStationId, t.ArrivalStationName,
-                    t.Departure, t.Arrival);
+                SetTrains(routeId);
+                dataGridView1.Rows.Clear();
+                foreach (var t in DbContext.Trains)
+                {
+                    dataGridView1.Rows.Add(t.Id, t.Number,
+                        t.DepartureStationId, t.DepartureStationName,
+                        t.ArrivalStationId, t.ArrivalStationName,
+                        t.Departure, t.Arrival);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -72,8 +113,44 @@ namespace Railway.Forms
 
         private void tsbAdd_Click(object sender, EventArgs e)
         {
-            TrainDetailForm tdf = new TrainDetailForm();
 
+            var r = (Route)cbRoute.SelectedItem;
+            if (r == null) {
+                MessageBox.Show("Не выбран маршрут");
+                return;
+            }
+            try
+            {
+
+                TrainDetailForm tdf = new TrainDetailForm();
+                if (tdf.ShowDialog() != DialogResult.OK) return;
+                var sharedVagon = Convert.ToInt32(tdf.tbShared.Text);
+                var economVagon = Convert.ToInt32(tdf.tbEconom.Text);
+                var compartVagon = Convert.ToInt32(tdf.tbCompart.Text);
+                var businesVagon = Convert.ToInt32(tdf.tbBusiness.Text);
+
+                Train train = new Train();
+                train.Number = r.Number;
+                train.ArrivalStationId = r.ArrivalStationId;
+                train.DepartureStationId = r.DepartureStationId;
+                foreach (var ri in r.Items)
+                {
+                    if (ri.DepartureTime == null)
+                        train.Arrival = ri.ArrivalTime.Value;
+                    if (ri.ArrivalTime == null)
+                        train.Departure = ri.DepartureTime.Value;
+                }
+                train.RouteId = r.Id;
+
+                DbContext.AddTrain(train, sharedVagon, economVagon, compartVagon, businesVagon);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            UpdateGrid(r.Id);
         }
+
+
     }
 }

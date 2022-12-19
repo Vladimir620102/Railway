@@ -585,7 +585,7 @@ JOIN Station as s1 on s1.id = r.to_station_id
                         ArrivalStationId = (int)arrivalStationId,
                         ArrivalStationName = (string)arrivalStationName,
                         DepartureStationId = (int)departureStationId,
-                        DepartureStationName = (string)departureStationName
+                        DepartureStationName = (string)departureStationName,
                     };
 
                     var list = GetRouteScedule(route.Id);
@@ -904,22 +904,26 @@ WHERE r.route_id = @RouteId
                 Trains.Clear();
                 connection.Open();
 
-                string sql = @"SELECT t.[id]
-      ,t.[number]
-      ,t.[from_station_id]
-        ,dep.Name
-      ,t.[to_station_id]
-        ,arr.Name
-      ,t.[departure]
-      ,t.[arrival]
-      ,t.[routeId]
-FROM [TRAIN] r 
-JOIN Station as dep on det.Id = ,t.[from_station_id]
+                string sql = @"SELECT t.[id] as Id
+      ,t.[number]   as Number
+      ,t.[from_station_id] as from_station_id
+        ,dep.Name as depName
+      ,t.[to_station_id] as to_station_id
+        ,arr.Name as arrName
+      ,t.[departure] as departure
+      ,t.[arrival] as arrival
+
+FROM [TRAIN] t
+JOIN Station as dep on dep.Id = t.[from_station_id]
 join station as arr ON arr.Id = t.[to_station_id]
 
 WHERE t.[routeId] = @RouteId
  ";
                 SqlCommand command = new SqlCommand(sql, connection);
+
+                command.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Id");
+                command.Parameters[0].Value = routeId;
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) // построчно считываем данные
@@ -964,21 +968,34 @@ WHERE t.[routeId] = @RouteId
 
         public static bool DeleteTrain(int trainId)
         {
+            SqlTransaction transaction = null;
             SqlConnection connection = null;
             try
             {
+
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand deleteCommand = new SqlCommand("DELETE FROM Train WHERE Id =  @Id ");
-                deleteCommand.Parameters.Add("@Id", SqlDbType.Int, sizeof(int), "Id");
-                deleteCommand.Parameters[0].Value = trainId;
-                deleteCommand.Connection = connection;
-                
+                string sql = "delete_train";
+                SqlCommand deleteCommand = new SqlCommand(sql, connection);
+                deleteCommand.CommandType = CommandType.StoredProcedure;
+                SqlParameter trainParam = new SqlParameter
+                {
+                    ParameterName = "@train_id",
+                    Value = trainId
+                };
+
+                deleteCommand.Parameters.Add(trainParam);
+
+                transaction = connection.BeginTransaction();
+                deleteCommand.Transaction = transaction;
+
                 var count = deleteCommand.ExecuteNonQuery();
+                transaction.Commit();
                 return count > 0;
             }
             catch (SqlException ex1)
             {
+                transaction.Rollback();
                 MessageBox.Show(ex1.Message);
             }
             catch (Exception ex2)
@@ -1003,6 +1020,7 @@ WHERE t.[routeId] = @RouteId
                 connection.Open();
                 string sql = "insert_train_with_stock_with_seats";
                 SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType= CommandType.StoredProcedure;
                 SqlParameter numberParam = new SqlParameter
                 {
                     ParameterName = "@number",
@@ -1062,8 +1080,6 @@ WHERE t.[routeId] = @RouteId
                 command.Parameters.Add(businesVagonParam);
 
                 transaction = connection.BeginTransaction();
-
-
                 command.Transaction = transaction;
 
                 var count = command.ExecuteNonQuery();

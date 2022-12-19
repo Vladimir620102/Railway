@@ -15,7 +15,7 @@ namespace Railway.Data.Model
         public string ArrivalStationName { get; set; }
         public int DepartureStationId { get; set; }
         public string DepartureStationName { get; set; }
-        public string Name { get; set; }
+        public string Name { get => $"Поезд №{Number}  {DepartureStationName} - {ArrivalStationName}"; }
         List<RouteItem> _items= new List<RouteItem>();
         public List<RouteItem> Items { get => _items; }
     }
