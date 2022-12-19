@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Railway.Data.Model
 {
-    public class Train
+    public class Route
     {
         public int Id { get; set; }
+
         public int Number { get; set; }
-        public int DepartureStationId { get; set; }
-        public string DepartureStationName { get; set; }
         public int ArrivalStationId { get; set; }
         public string ArrivalStationName { get; set; }
-        public DateTime Departure { get; set; }
-        public DateTime Arrival { get; set; }
-        public int RouteId { get; set; }
-
+        public int DepartureStationId { get; set; }
+        public string DepartureStationName { get; set; }
+        public string Name { get; set; }
+        List<RouteItem> _items= new List<RouteItem>();
+        public List<RouteItem> Items { get => _items; }
     }
 }

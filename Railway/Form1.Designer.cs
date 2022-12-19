@@ -138,6 +138,7 @@
             this.маршрутToolStripMenuItem.Name = "маршрутToolStripMenuItem";
             this.маршрутToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.маршрутToolStripMenuItem.Text = "Маршрут";
+            this.маршрутToolStripMenuItem.Click += new System.EventHandler(this.маршрутToolStripMenuItem_Click);
             // 
             // Form1
             // 

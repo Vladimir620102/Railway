@@ -83,6 +83,30 @@
     <Compile Include="Forms\CountryListForm.Designer.cs">
       <DependentUpon>CountryListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\RouteChoiceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RouteChoiceForm.Designer.cs">
+      <DependentUpon>RouteChoiceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RouteDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RouteDetailForm.Designer.cs">
+      <DependentUpon>RouteDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RouteItemForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RouteItemForm.Designer.cs">
+      <DependentUpon>RouteItemForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RouteListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RouteListForm.Designer.cs">
+      <DependentUpon>RouteListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\StationDetailForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +124,18 @@
     </Compile>
     <Compile Include="Forms\TicketForm.Designer.cs">
       <DependentUpon>TicketForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainDetailForm.Designer.cs">
+      <DependentUpon>TrainDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\TrainListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\TrainListForm.Designer.cs">
+      <DependentUpon>TrainListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Helper.cs" />
     <Compile Include="Model\Ticket.cs" />
@@ -123,6 +159,18 @@
     <EmbeddedResource Include="Forms\CountryListForm.resx">
       <DependentUpon>CountryListForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RouteChoiceForm.resx">
+      <DependentUpon>RouteChoiceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RouteDetailForm.resx">
+      <DependentUpon>RouteDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RouteItemForm.resx">
+      <DependentUpon>RouteItemForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RouteListForm.resx">
+      <DependentUpon>RouteListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\StationDetailForm.resx">
       <DependentUpon>StationDetailForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -131,6 +179,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TicketForm.resx">
       <DependentUpon>TicketForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainDetailForm.resx">
+      <DependentUpon>TrainDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TrainListForm.resx">
+      <DependentUpon>TrainListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -167,6 +221,8 @@
     <Content Include="Icons\delete_32.png" />
     <Content Include="Icons\edit_32.png" />
     <Content Include="Icons\exit.png" />
+    <Content Include="Icons\SaveAndClose_32x32.png" />
+    <Content Include="Icons\Save_32x32.png" />
     <Content Include="Icons\train.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

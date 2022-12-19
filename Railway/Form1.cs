@@ -55,5 +55,11 @@ namespace Railway
             StationListForm sf = new StationListForm();
             sf.ShowDialog();
         }
+
+        private void маршрутToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RouteListForm routeListForm = new RouteListForm();
+            routeListForm.ShowDialog();
+        }
     }
 }

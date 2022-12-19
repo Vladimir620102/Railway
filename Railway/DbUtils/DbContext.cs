@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Railway.Properties;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Xml.Linq;
 
 namespace Railway.DbUtils
 {
@@ -17,7 +19,8 @@ namespace Railway.DbUtils
         public static List<Country> Countries = new List<Country>();
         public static List<City> Cities = new List<City>();
         public static List<Station> Stations = new List<Station>();
-
+        public static List<Route> Routes = new List<Route>();
+        public static List<Train> Trains = new List<Train>();
 
         static string _connectionString = Properties.Settings.Default.ConnectionString;
 
@@ -25,7 +28,7 @@ namespace Railway.DbUtils
         #region Country
         public static void SetCountries()
         {
-            SqlConnection connection=null;
+            SqlConnection connection = null;
             try
             {
                 connection = new SqlConnection(_connectionString);
@@ -198,7 +201,7 @@ namespace Railway.DbUtils
                 Cities.Clear();
                 connection.Open();
 
-                string sql = @"SELECT TOP (1000) c1.[Id]
+                string sql = @"SELECT c1.[Id]
       ,c1.[Country]
 	  ,c2.[Name] as CountryName
       ,c1.[Name] as CityName
@@ -296,7 +299,7 @@ namespace Railway.DbUtils
             SetCities();
             foreach (var c in Cities)
             {
-                if ( cityId == c.Id) return c;
+                if (cityId == c.Id) return c;
             }
             return null;
         }
@@ -377,7 +380,7 @@ namespace Railway.DbUtils
                 Stations.Clear();
                 connection.Open();
 
-                string sql = @"SELECT TOP (1000) c1.[Id]
+                string sql = @"SELECT c1.[Id]
       ,c1.[number]
       ,c1.[Name] as StationName
       ,c2.[Name] as CityName
@@ -400,7 +403,7 @@ namespace Railway.DbUtils
                         Number = (int)number,
                         Name = (string)stationName,
                         CityName = cityName == DBNull.Value ? string.Empty : (string)cityName,
-                        CityId = cityId==DBNull.Value?0: (int)cityId
+                        CityId = cityId == DBNull.Value ? 0 : (int)cityId
                     };
                     Stations.Add(station);
                 }
@@ -530,7 +533,561 @@ namespace Railway.DbUtils
             }
             return false;
         }
+
+        public static Station GetStation(int stationId)
+        {
+            foreach (var c in Stations)
+            {
+                if (stationId == c.Id) return c;
+            }
+            return null;
+        }
+
         #endregion Station
 
+        #region Route
+        public static void SetRoutes()
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+
+                if (connection == null) return;
+                Routes.Clear();
+                connection.Open();
+
+                string sql = @"SELECT r.[Id]
+      ,r.[number]
+      ,r.[from_station_id]
+	  ,s0.name
+      ,r.[to_station_id]
+	  ,s1.name
+FROM [ROUTE] r
+JOIN Station as s0 on s0.id = r.from_station_id
+JOIN Station as s1 on s1.id = r.to_station_id
+ ";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object id = reader.GetValue(0);
+                    object number = reader.GetValue(1);
+                    object departureStationId = reader.GetValue(2);
+                    object departureStationName = reader.GetValue(3);
+                    object arrivalStationId = reader.GetValue(4);
+                    object arrivalStationName = reader.GetValue(5);
+                    Route route = new Route()
+                    {
+                        Id = (int)id,
+                        Number = (int)number,
+                        ArrivalStationId = (int)arrivalStationId,
+                        ArrivalStationName = (string)arrivalStationName,
+                        DepartureStationId = (int)departureStationId,
+                        DepartureStationName = (string)departureStationName
+                    };
+
+                    var list = GetRouteScedule(route.Id);
+                    foreach (var ri in list)
+                    {
+                        route.Items.Add(ri);
+                    }
+                    Routes.Add(route);
+                }
+            }
+            catch (SqlException e1)
+            {
+                MessageBox.Show(e1.Message);
+            }
+            catch (Exception e2)
+            {
+                MessageBox.Show(e2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+
+        }
+
+        static List<RouteItem> GetRouteScedule(int routeId)
+        {
+            SqlConnection connection = null;
+            List<RouteItem> list = new List<RouteItem>();
+
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+
+                if (connection == null) return null;
+                connection.Open();
+
+                string sql = @"SELECT r.route_Id
+      ,r.station_id
+	  ,r.arrival_time
+      ,r.departure_time
+FROM [ROUTE_SCEDULE] r
+WHERE r.route_id = @RouteId
+ ";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Route_Id");
+                command.Parameters[0].Value = routeId;
+
+                SqlDataReader reader = command.ExecuteReader();
+
+
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object station_id = reader.GetValue(1);
+                    object arrivalTime = reader.GetValue(2);
+                    object departureTime = reader.GetValue(3);
+                    RouteItem routeItem = new RouteItem();
+                    routeItem.Station = (int)station_id;
+                    if (arrivalTime != DBNull.Value)
+                        routeItem.ArrivalTime = (DateTime)arrivalTime;
+                    if (departureTime != DBNull.Value)
+                        routeItem.DepartureTime = (DateTime)departureTime;
+
+                    list.Add(routeItem);
+                }
+            }
+            catch (SqlException e1)
+            {
+                MessageBox.Show(e1.Message);
+            }
+            catch (Exception e2)
+            {
+                MessageBox.Show(e2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return list;
+        }
+
+
+        public static bool AddRoute(Route route)
+        {
+            SqlConnection connection = null;
+            SqlTransaction transaction = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                transaction = connection.BeginTransaction();
+
+                string sql = "INSERT INTO Route (number, from_station_id, to_station_id) VALUES ( @Number, @DepartureName, @ArrivalName)";
+
+                SqlCommand insertCommand = new SqlCommand(sql, connection);
+
+                insertCommand.Parameters.Add("@Number", SqlDbType.Int, sizeof(int), "Number");
+                insertCommand.Parameters.Add("@DepartureName", SqlDbType.NVarChar, 255, "from_station_id");
+                insertCommand.Parameters.Add("@ArrivalName", SqlDbType.NVarChar, 255, "to_station_id");
+                insertCommand.Parameters[0].Value = route.Number;
+                insertCommand.Parameters[1].Value = route.DepartureStationId;
+                insertCommand.Parameters[2].Value = route.ArrivalStationId;
+
+                insertCommand.Transaction = transaction;
+
+                var count = insertCommand.ExecuteNonQuery();
+
+                AddSceduleRoute(connection, transaction, route);
+
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+        static void AddSceduleRoute(SqlConnection conn, SqlTransaction transaction, Route route)
+        {
+            /*
+             * [route_id]
+      ,[station_id]
+      ,[arrival_time]
+      ,[departure_time]
+             * */
+            string sql = "INSERT INTO ROUTE_SCEDULE (route_id, station_id, arrival_time, departure_time) VALUES ( @RouteId, @StationId, @ArrivalTime, @DepartureTime)";
+
+            SqlCommand insertCommand = new SqlCommand(sql, conn);
+
+            insertCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Route_id");
+            insertCommand.Parameters.Add("@StationId", SqlDbType.Int, sizeof(int), "Station_Id");
+            insertCommand.Parameters.Add("@ArrivalTime", SqlDbType.DateTime, 32, "Arrival_time");
+            insertCommand.Parameters.Add("@DepartureTime", SqlDbType.DateTime, 32, "Departure_Time");
+
+
+
+
+            insertCommand.Transaction = transaction;
+
+
+
+            foreach (var item in route.Items)
+            {
+                insertCommand.Parameters[0].Value = route.Id;
+                insertCommand.Parameters[1].Value = item.Station;
+                insertCommand.Parameters[2].Value = item.ArrivalTime.HasValue ? (object)item.ArrivalTime.Value : DBNull.Value;
+                insertCommand.Parameters[3].Value = item.DepartureTime.HasValue ? (object)item.DepartureTime.Value : DBNull.Value;
+
+                insertCommand.ExecuteNonQuery();
+            }
+        }
+
+        static void DeleteSceduleRoute(SqlConnection conn, SqlTransaction transaction, Route route)
+        {
+            if (route == null) return;
+            DeleteSceduleRoute(conn, transaction, route.Id);
+        }
+        static void DeleteSceduleRoute(SqlConnection conn, SqlTransaction transaction, int routeId)
+        {
+
+            string sql = "DELETE FROM [ROUTE_SCEDULE] WHERE Route_Id = @RouteId";
+
+            SqlCommand deleteCommand = new SqlCommand(sql, conn);
+            deleteCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Route_Id");
+            deleteCommand.Parameters[0].Value = routeId;
+            deleteCommand.Transaction = transaction;
+
+            deleteCommand.ExecuteNonQuery();
+        }
+
+        public static void SaveRoute(Route route)
+        {
+            if (route == null) return;
+            var r = GetRoute(route.Id);
+            if (r == null) AddRoute(route);
+            else UpdateRoute(route);
+        }
+
+        public static Route GetRoute(int routeId)
+        {
+            foreach (var r in Routes)
+                if (r.Id == routeId)
+                {
+                    r.Items.Clear();
+                    var list = GetRouteScedule(r.Id);
+                    foreach (var ri in list)
+                    {
+                        r.Items.Add(ri);
+                    }
+                    return r;
+                }
+            return null;
+        }
+
+        public static bool UpdateRoute(Route route)
+        {
+
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "Update ROUTE SET Number = @Number, from_station_id = @DepartureStationId, to_station_id = @ArrivalStationId WHERE Id = @RouteId";
+                SqlCommand updateCommand = new SqlCommand(sql, connection);
+                transaction = connection.BeginTransaction();
+
+                updateCommand.Parameters.Add("@Number", SqlDbType.Int, sizeof(int), "Number");
+                updateCommand.Parameters.Add("@DepartureStationId", SqlDbType.Int, sizeof(int), "from_station_id");
+                updateCommand.Parameters.Add("@ArrivalStationId", SqlDbType.Int, sizeof(int), "to_station_id");
+                updateCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Id");
+
+                updateCommand.Parameters[0].Value = route.Number;
+                updateCommand.Parameters[1].Value = route.DepartureStationId;
+                updateCommand.Parameters[2].Value = route.ArrivalStationId;
+                updateCommand.Parameters[3].Value = route.Id;
+
+                updateCommand.Transaction = transaction;
+
+                DeleteSceduleRoute(connection, transaction, route);
+                AddSceduleRoute(connection, transaction, route);
+
+                var count = updateCommand.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+
+        public static bool DeleteRoute(Route route)
+        {
+            if (route == null) return false;
+            return DeleteRoute(route.Id);
+        }
+        public static bool DeleteRoute(int routeId)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "DELETE from ROUTE WHERE Id = @RouteId";
+                SqlCommand deleteCommand = new SqlCommand(sql, connection);
+                transaction = connection.BeginTransaction();
+
+                deleteCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Id");
+                deleteCommand.Parameters[0].Value = routeId;
+
+                deleteCommand.Transaction = transaction;
+
+                DeleteSceduleRoute(connection, transaction, routeId);
+
+                var count = deleteCommand.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+
+        }
+
+        #endregion Route
+
+        #region Train
+        public static void SetTrains(int routeId)
+        {
+
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+
+                if (connection == null) return;
+                Trains.Clear();
+                connection.Open();
+
+                string sql = @"SELECT t.[id]
+      ,t.[number]
+      ,t.[from_station_id]
+        ,dep.Name
+      ,t.[to_station_id]
+        ,arr.Name
+      ,t.[departure]
+      ,t.[arrival]
+      ,t.[routeId]
+FROM [TRAIN] r 
+JOIN Station as dep on det.Id = ,t.[from_station_id]
+join station as arr ON arr.Id = t.[to_station_id]
+
+WHERE t.[routeId] = @RouteId
+ ";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object id = reader.GetValue(0);
+                    object number = reader.GetValue(1);
+                    object departureStationId = reader.GetValue(2);
+                    object departureStationName = reader.GetValue(3);
+                    object arrivalStationId = reader.GetValue(4);
+                    object arrivalStationName = reader.GetValue(5);
+                    object departureTime = reader.GetValue(6);
+                    object arrivalTime = reader.GetValue(7);
+                    Train train = new Train()
+                    {
+                        Id = (int)id,
+                        Number = (int)number,
+                        DepartureStationId = (int)departureStationId,
+                        DepartureStationName = (string)departureStationName,
+                        ArrivalStationId = (int)arrivalStationId,
+                        ArrivalStationName = (string)arrivalStationName,
+                        Departure = (DateTime)departureTime,
+                        Arrival = (DateTime)arrivalTime
+                    };
+
+                    Trains.Add(train);
+                }
+            }
+            catch (SqlException e1)
+            {
+                MessageBox.Show(e1.Message);
+            }
+            catch (Exception e2)
+            {
+                MessageBox.Show(e2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+        }
+
+        public static bool DeleteTrain(int trainId)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                SqlCommand deleteCommand = new SqlCommand("DELETE FROM Train WHERE Id =  @Id ");
+                deleteCommand.Parameters.Add("@Id", SqlDbType.Int, sizeof(int), "Id");
+                deleteCommand.Parameters[0].Value = trainId;
+                deleteCommand.Connection = connection;
+                
+                var count = deleteCommand.ExecuteNonQuery();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+
+        public static bool AddTrain(Train train, int sharedVagon, int economVagon, int compartVagon, int businesVagon)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "insert_train_with_stock_with_seats";
+                SqlCommand command = new SqlCommand(sql, connection);
+                SqlParameter numberParam = new SqlParameter
+                {
+                    ParameterName = "@number",
+                    Value = train.Number
+                };
+                SqlParameter departureStationParam = new SqlParameter
+                {
+                    ParameterName = "@from_station_id",
+                    Value = train.DepartureStationId
+                };
+                SqlParameter arrivalStationParam = new SqlParameter
+                {
+                    ParameterName = "@to_station_id",
+                    Value = train.ArrivalStationId
+                };
+                SqlParameter departureParam = new SqlParameter
+                {
+                    ParameterName = "@departure",
+                    Value = train.Departure
+                };
+                SqlParameter arrivalParam = new SqlParameter
+                {
+                    ParameterName = "@arrival",
+                    Value = train.Arrival
+                };
+
+                SqlParameter sharedVagonParam = new SqlParameter
+                {
+                    ParameterName = "@number_of_O_cars",
+                    Value = sharedVagon
+                };
+
+                SqlParameter economVagonParam = new SqlParameter
+                {
+                    ParameterName = "@number_of_P_cars",
+                    Value = economVagon
+                };
+                SqlParameter compartVagonParam = new SqlParameter
+                {
+                    ParameterName = "@number_of_K_cars",
+                    Value = compartVagon
+                };
+                SqlParameter businesVagonParam = new SqlParameter
+                {
+                    ParameterName = "@number_of_SV_cars",
+                    Value = sharedVagon
+                };
+
+                command.Parameters.Add(numberParam);
+                command.Parameters.Add(departureStationParam);
+                command.Parameters.Add(arrivalStationParam);
+                command.Parameters.Add(departureParam);
+                command.Parameters.Add(arrivalParam);
+                command.Parameters.Add(sharedVagonParam);
+                command.Parameters.Add(economVagonParam);
+                command.Parameters.Add(compartVagonParam);
+                command.Parameters.Add(businesVagonParam);
+
+                transaction = connection.BeginTransaction();
+
+
+                command.Transaction = transaction;
+
+                var count = command.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+
+        }
+
+        #endregion Train
     }
 }

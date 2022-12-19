@@ -36,7 +36,8 @@ namespace Railway.Forms
             if (string.IsNullOrWhiteSpace(detailForm.tbName.Text)) return;
 
             int cityId = 0;
-            if (!string.IsNullOrEmpty(detailForm.cbCity.Text)) cityId = Convert.ToInt32(((City)(detailForm.cbCity.SelectedItem)).Id);
+            if (!string.IsNullOrEmpty(detailForm.cbCity.Text))
+                cityId = Convert.ToInt32(((City)(detailForm.cbCity.SelectedItem)).Id);
             var number = Convert.ToInt32(detailForm.tbNumber.Text);
             DbContext.AddStation(number, detailForm.tbName.Text, cityId);
             UpdateGrid();
