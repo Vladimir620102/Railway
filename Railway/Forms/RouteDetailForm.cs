@@ -230,6 +230,7 @@ namespace Railway.Forms
                 }
 
                 DbContext.SaveRoute(route);
+                this.DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)

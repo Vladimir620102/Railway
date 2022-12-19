@@ -35,5 +35,11 @@ namespace Railway.Forms
             foreach (var s in Helper.car_type)      
             cbCar_Type.Items.Add(s) ;
         }
+
+        private void cbArrival_SelectedValueChanged(object sender, EventArgs e)
+        {
+            // Получить список поездов 
+            
+        }
     }
 }
