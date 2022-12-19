@@ -152,7 +152,7 @@
             this.tsbNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbNew.Name = "tsbNew";
             this.tsbNew.Size = new System.Drawing.Size(23, 22);
-            this.tsbNew.Text = "Новый";
+            this.tsbNew.Text = "Добавить";
             this.tsbNew.Click += new System.EventHandler(this.tsbNew_Click);
             // 
             // tsbEdit
@@ -206,7 +206,8 @@
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RouteListForm";
-            this.Text = "RouteListForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Маршруты";
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.toolStrip1.ResumeLayout(false);

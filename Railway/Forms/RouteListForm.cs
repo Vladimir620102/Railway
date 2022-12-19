@@ -95,7 +95,7 @@ namespace Railway.Forms
             DbContext.SetRoutes();
             foreach (var s in DbContext.Routes)
             {
-                dataGridView1.Rows.Add(s.Id.ToString(), s.Number, s.ArrivalStationId, s.ArrivalStationName,s.DepartureStationId,s.DepartureStationName);
+                dataGridView1.Rows.Add(s.Id.ToString(), s.Number, s.DepartureStationId, s.DepartureStationName, s.ArrivalStationId, s.ArrivalStationName);
             }
             if (currentPosition > -1 && dataGridView1.Rows.Count > 0)
                 dataGridView1.CurrentCell = dataGridView1.Rows[currentPosition].Cells[1];

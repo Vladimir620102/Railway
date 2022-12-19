@@ -212,6 +212,7 @@
             this.Controls.Add(this.panel3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TrainDetailForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Поезд";
             this.panel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

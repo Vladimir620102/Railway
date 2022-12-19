@@ -32,13 +32,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.StationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Arrived = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Departure = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.IsDeparture = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.IsEndStation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbAdd = new System.Windows.Forms.ToolStripButton();
             this.tsbEdit = new System.Windows.Forms.ToolStripButton();
@@ -59,6 +52,13 @@
             this.cbDeparture = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StationName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Arrived = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Departure = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.IsDeparture = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.IsEndStation = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -70,7 +70,7 @@
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 428);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(814, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(794, 22);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -82,7 +82,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(814, 425);
+            this.panel3.Size = new System.Drawing.Size(794, 425);
             this.panel3.TabIndex = 3;
             // 
             // dataGridView1
@@ -99,50 +99,8 @@
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 160);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(814, 265);
+            this.dataGridView1.Size = new System.Drawing.Size(794, 265);
             this.dataGridView1.TabIndex = 1;
-            // 
-            // Id
-            // 
-            this.Id.HeaderText = "Идентификатор";
-            this.Id.Name = "Id";
-            this.Id.ReadOnly = true;
-            this.Id.Visible = false;
-            // 
-            // StationId
-            // 
-            this.StationId.HeaderText = "Ид станции";
-            this.StationId.Name = "StationId";
-            this.StationId.ReadOnly = true;
-            this.StationId.Visible = false;
-            // 
-            // StationName
-            // 
-            this.StationName.HeaderText = "Станция";
-            this.StationName.Name = "StationName";
-            this.StationName.ReadOnly = true;
-            this.StationName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.StationName.Width = 300;
-            // 
-            // Arrived
-            // 
-            this.Arrived.HeaderText = "Прибытие";
-            this.Arrived.Name = "Arrived";
-            // 
-            // Departure
-            // 
-            this.Departure.HeaderText = "Отправление";
-            this.Departure.Name = "Departure";
-            // 
-            // IsDeparture
-            // 
-            this.IsDeparture.HeaderText = "Начальная";
-            this.IsDeparture.Name = "IsDeparture";
-            // 
-            // IsEndStation
-            // 
-            this.IsEndStation.HeaderText = "Конечная";
-            this.IsEndStation.Name = "IsEndStation";
             // 
             // toolStrip1
             // 
@@ -153,7 +111,7 @@
             this.tsbDelete});
             this.toolStrip1.Location = new System.Drawing.Point(0, 135);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(814, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(794, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -207,13 +165,13 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(814, 135);
+            this.panel4.Size = new System.Drawing.Size(794, 135);
             this.panel4.TabIndex = 0;
             // 
             // dtpArrival
             // 
             this.dtpArrival.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpArrival.Location = new System.Drawing.Point(580, 101);
+            this.dtpArrival.Location = new System.Drawing.Point(564, 101);
             this.dtpArrival.Name = "dtpArrival";
             this.dtpArrival.Size = new System.Drawing.Size(200, 20);
             this.dtpArrival.TabIndex = 10;
@@ -222,7 +180,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(503, 101);
+            this.label5.Location = new System.Drawing.Point(487, 101);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 13);
             this.label5.TabIndex = 9;
@@ -231,7 +189,7 @@
             // dtpDeparture
             // 
             this.dtpDeparture.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpDeparture.Location = new System.Drawing.Point(580, 63);
+            this.dtpDeparture.Location = new System.Drawing.Point(564, 63);
             this.dtpDeparture.Name = "dtpDeparture";
             this.dtpDeparture.Size = new System.Drawing.Size(200, 20);
             this.dtpDeparture.TabIndex = 8;
@@ -240,7 +198,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(487, 66);
+            this.label4.Location = new System.Drawing.Point(471, 66);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(74, 13);
             this.label4.TabIndex = 7;
@@ -254,7 +212,7 @@
             this.tsbExit});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(814, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(794, 25);
             this.toolStrip2.TabIndex = 6;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -304,7 +262,7 @@
             this.cbArrival.FormattingEnabled = true;
             this.cbArrival.Location = new System.Drawing.Point(118, 101);
             this.cbArrival.Name = "cbArrival";
-            this.cbArrival.Size = new System.Drawing.Size(347, 21);
+            this.cbArrival.Size = new System.Drawing.Size(324, 21);
             this.cbArrival.TabIndex = 3;
             this.cbArrival.SelectedValueChanged += new System.EventHandler(this.cbArrival_SelectedValueChanged);
             // 
@@ -313,7 +271,7 @@
             this.cbDeparture.FormattingEnabled = true;
             this.cbDeparture.Location = new System.Drawing.Point(118, 66);
             this.cbDeparture.Name = "cbDeparture";
-            this.cbDeparture.Size = new System.Drawing.Size(347, 21);
+            this.cbDeparture.Size = new System.Drawing.Size(324, 21);
             this.cbDeparture.TabIndex = 2;
             this.cbDeparture.SelectedValueChanged += new System.EventHandler(this.cbDeparture_SelectedValueChanged);
             // 
@@ -335,15 +293,62 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Начальная станция";
             // 
+            // Id
+            // 
+            this.Id.HeaderText = "Идентификатор";
+            this.Id.Name = "Id";
+            this.Id.ReadOnly = true;
+            this.Id.Visible = false;
+            // 
+            // StationId
+            // 
+            this.StationId.HeaderText = "Ид станции";
+            this.StationId.Name = "StationId";
+            this.StationId.ReadOnly = true;
+            this.StationId.Visible = false;
+            // 
+            // StationName
+            // 
+            this.StationName.HeaderText = "Станция";
+            this.StationName.Name = "StationName";
+            this.StationName.ReadOnly = true;
+            this.StationName.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.StationName.Width = 350;
+            // 
+            // Arrived
+            // 
+            this.Arrived.HeaderText = "Прибытие";
+            this.Arrived.Name = "Arrived";
+            this.Arrived.ReadOnly = true;
+            // 
+            // Departure
+            // 
+            this.Departure.HeaderText = "Отправление";
+            this.Departure.Name = "Departure";
+            this.Departure.ReadOnly = true;
+            // 
+            // IsDeparture
+            // 
+            this.IsDeparture.HeaderText = "Начальная";
+            this.IsDeparture.Name = "IsDeparture";
+            this.IsDeparture.ReadOnly = true;
+            // 
+            // IsEndStation
+            // 
+            this.IsEndStation.HeaderText = "Конечная";
+            this.IsEndStation.Name = "IsEndStation";
+            this.IsEndStation.ReadOnly = true;
+            // 
             // RouteDetailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(814, 450);
+            this.ClientSize = new System.Drawing.Size(794, 450);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RouteDetailForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Маршрут поезда";
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
@@ -368,13 +373,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StationId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StationName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Arrived;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Departure;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsDeparture;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn IsEndStation;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ToolStrip toolStrip2;
         private System.Windows.Forms.ToolStripButton tsbSaveAndClose;
@@ -390,5 +388,12 @@
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.DateTimePicker dtpArrival;
         public System.Windows.Forms.DateTimePicker dtpDeparture;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StationId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StationName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Arrived;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Departure;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsDeparture;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn IsEndStation;
     }
 }

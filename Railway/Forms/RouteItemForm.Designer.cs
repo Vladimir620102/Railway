@@ -228,6 +228,7 @@
             this.Controls.Add(this.panel3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RouteItemForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Станция";
             this.panel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

@@ -83,12 +83,6 @@
     <Compile Include="Forms\CountryListForm.Designer.cs">
       <DependentUpon>CountryListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\RouteChoiceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\RouteChoiceForm.Designer.cs">
-      <DependentUpon>RouteChoiceForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\RouteDetailForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -158,9 +152,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CountryListForm.resx">
       <DependentUpon>CountryListForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\RouteChoiceForm.resx">
-      <DependentUpon>RouteChoiceForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RouteDetailForm.resx">
       <DependentUpon>RouteDetailForm.cs</DependentUpon>

@@ -209,6 +209,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CityListForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Города";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
