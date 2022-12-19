@@ -124,22 +124,30 @@ namespace Railway.Forms
 
                 TrainDetailForm tdf = new TrainDetailForm();
                 if (tdf.ShowDialog() != DialogResult.OK) return;
-                var sharedVagon = Convert.ToInt32(tdf.tbShared.Text);
-                var economVagon = Convert.ToInt32(tdf.tbEconom.Text);
-                var compartVagon = Convert.ToInt32(tdf.tbCompart.Text);
-                var businesVagon = Convert.ToInt32(tdf.tbBusiness.Text);
+                var sharedVagon = string.IsNullOrWhiteSpace(tdf.tbShared.Text)?0: Convert.ToInt32(tdf.tbShared.Text);
+                var economVagon = string.IsNullOrWhiteSpace(tdf.tbEconom.Text) ? 0 : Convert.ToInt32(tdf.tbEconom.Text);
+                var compartVagon = string.IsNullOrWhiteSpace(tdf.tbCompart.Text) ? 0 : Convert.ToInt32(tdf.tbCompart.Text);
+                var businesVagon = string.IsNullOrWhiteSpace(tdf.tbBusiness.Text) ? 0 : Convert.ToInt32(tdf.tbBusiness.Text);
 
                 Train train = new Train();
                 train.Number = r.Number;
                 train.ArrivalStationId = r.ArrivalStationId;
                 train.DepartureStationId = r.DepartureStationId;
+                int d1=0, d2=0;
                 foreach (var ri in r.Items)
                 {
                     if (ri.DepartureTime == null)
-                        train.Arrival = ri.ArrivalTime.Value;
+                    {
+                        d1 = (tdf.dtpDate.Value - ri.ArrivalTime.Value).Days;
+                        train.Arrival = ri.ArrivalTime.Value.AddDays(d1);
+                    }
                     if (ri.ArrivalTime == null)
-                        train.Departure = ri.DepartureTime.Value;
+                    {
+                        d2 = (tdf.dtpDate.Value - ri.DepartureTime.Value).Days;
+                        train.Departure = ri.DepartureTime.Value.AddDays(d2);
+                    }
                 }
+                if (d1 < d2) train.Arrival = train.Arrival.AddDays(1);
                 train.RouteId = r.Id;
 
                 DbContext.AddTrain(train, sharedVagon, economVagon, compartVagon, businesVagon);

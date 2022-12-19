@@ -35,16 +35,16 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.tbBusiness = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbCompart = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbEconom = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dtpDate = new System.Windows.Forms.DateTimePicker();
             this.tbShared = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.tbEconom = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.tbCompart = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbBusiness = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -110,7 +110,7 @@
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.tbEconom);
             this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.dateTimePicker1);
+            this.panel2.Controls.Add(this.dtpDate);
             this.panel2.Controls.Add(this.tbShared);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
@@ -120,6 +120,62 @@
             this.panel2.Size = new System.Drawing.Size(391, 284);
             this.panel2.TabIndex = 5;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            // 
+            // tbBusiness
+            // 
+            this.tbBusiness.Location = new System.Drawing.Point(155, 205);
+            this.tbBusiness.Name = "tbBusiness";
+            this.tbBusiness.Size = new System.Drawing.Size(200, 20);
+            this.tbBusiness.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(58, 208);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(85, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Мягкие вагоны";
+            // 
+            // tbCompart
+            // 
+            this.tbCompart.Location = new System.Drawing.Point(155, 165);
+            this.tbCompart.Name = "tbCompart";
+            this.tbCompart.Size = new System.Drawing.Size(200, 20);
+            this.tbCompart.TabIndex = 10;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(46, 168);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(97, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Купейные вагоны";
+            // 
+            // tbEconom
+            // 
+            this.tbEconom.Location = new System.Drawing.Point(155, 126);
+            this.tbEconom.Name = "tbEconom";
+            this.tbEconom.Size = new System.Drawing.Size(200, 20);
+            this.tbEconom.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(27, 129);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(116, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Плацкартные вагоны";
+            // 
+            // dtpDate
+            // 
+            this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDate.Location = new System.Drawing.Point(155, 48);
+            this.dtpDate.Name = "dtpDate";
+            this.dtpDate.Size = new System.Drawing.Size(200, 20);
+            this.dtpDate.TabIndex = 6;
             // 
             // tbShared
             // 
@@ -145,62 +201,6 @@
             this.label2.Size = new System.Drawing.Size(33, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Дата";
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(155, 48);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 6;
-            // 
-            // tbEconom
-            // 
-            this.tbEconom.Location = new System.Drawing.Point(155, 126);
-            this.tbEconom.Name = "tbEconom";
-            this.tbEconom.Size = new System.Drawing.Size(200, 20);
-            this.tbEconom.TabIndex = 8;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(27, 129);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(116, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Плацкартные вагоны";
-            // 
-            // tbCompart
-            // 
-            this.tbCompart.Location = new System.Drawing.Point(155, 165);
-            this.tbCompart.Name = "tbCompart";
-            this.tbCompart.Size = new System.Drawing.Size(200, 20);
-            this.tbCompart.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(46, 168);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(97, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Купейные вагоны";
-            // 
-            // tbBusiness
-            // 
-            this.tbBusiness.Location = new System.Drawing.Point(155, 205);
-            this.tbBusiness.Name = "tbBusiness";
-            this.tbBusiness.Size = new System.Drawing.Size(200, 20);
-            this.tbBusiness.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(58, 208);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(85, 13);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Мягкие вагоны";
             // 
             // TrainDetailForm
             // 
@@ -236,9 +236,9 @@
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox tbEconom;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
         public System.Windows.Forms.TextBox tbShared;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.DateTimePicker dtpDate;
     }
 }
