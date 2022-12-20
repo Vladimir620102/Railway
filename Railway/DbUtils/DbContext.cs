@@ -21,6 +21,7 @@ namespace Railway.DbUtils
         public static List<Station> Stations = new List<Station>();
         public static List<Route> Routes = new List<Route>();
         public static List<Train> Trains = new List<Train>();
+        public static List<CarType> CarTypes = new List<CarType>();
 
         static string _connectionString = Properties.Settings.Default.ConnectionString;
 
@@ -1105,5 +1106,122 @@ WHERE t.[routeId] = @RouteId
         }
 
         #endregion Train
+
+        #region CarType
+        public static void SetCarType()
+        {
+            if (CarTypes.Count > 0) return;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                if (connection == null) return;
+
+                CarTypes.Clear();
+                connection.Open();
+
+                SqlCommand command = new SqlCommand("SELECT * FROM CAR_TYPE", connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object id = reader.GetValue(0);
+                    object name = reader.GetValue(1);
+                    object capacity = reader.GetValue(2);
+                    CarType c = new CarType()
+                    {
+                        Id = (int)id,
+                        Name = (string)name,
+                        Capacity = capacity == DBNull.Value ? 0 : (int)capacity
+                    };
+                    CarTypes.Add(c);
+                }
+            }
+            catch (SqlException e1)
+            {
+                MessageBox.Show(e1.Message);
+            }
+            catch (Exception e2)
+            {
+                MessageBox.Show(e2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+        }
+        #endregion CarType
+
+        #region Ticket
+        public static List<Route> SelectTrainForTicket(int fromStationId, int toStationId)
+        {
+            List<Route> list = new List<Route>();
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                //@departure_id int,                 @arrival_id int
+                            connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "ticketservice.select_route_by_stations";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter fromParam = new SqlParameter
+                {
+                    ParameterName = "@departure_id",
+                    Value = fromStationId
+                };
+
+                SqlParameter toParam = new SqlParameter
+                {
+                    ParameterName = "@arrival_id",
+                    Value = toStationId
+                };
+
+                command.Parameters.Add(fromParam);
+                command.Parameters.Add(toParam);
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object id = reader.GetValue(0);
+                    object number  = reader.GetValue(1);
+                    object from_station_id = reader.GetValue(2);
+                    object departureName = reader.GetValue(3);
+                    object to_station_id = reader.GetValue(4);
+                    object arrivalName = reader.GetValue(5);
+                    
+                    Route c = new Route()
+                    {
+                        Id = (int)id,
+                        Number = (int)number,
+                        DepartureStationId = from_station_id == DBNull.Value ? -1 : (int)from_station_id,
+                        DepartureStationName = departureName == DBNull.Value ? "" : (string)departureName,
+                        ArrivalStationId = to_station_id == DBNull.Value ? -1 : (int)to_station_id,
+                        ArrivalStationName = arrivalName == DBNull.Value ? "" : (string)arrivalName
+                    };
+                    list.Add(c);
+                }
+                return list;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+
+            return null;
+        }
+        #endregion Ticket
+
     }
 }

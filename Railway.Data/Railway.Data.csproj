@@ -48,6 +48,7 @@
     <Compile Include="Model\Route.cs" />
     <Compile Include="Model\RouteItem.cs" />
     <Compile Include="Model\Station.cs" />
+    <Compile Include="Model\TicketRoute.cs" />
     <Compile Include="Model\Train.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
