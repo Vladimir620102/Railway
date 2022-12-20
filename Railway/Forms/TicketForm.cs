@@ -154,7 +154,12 @@ namespace Railway.Forms
                     Vagon = vagon,
                     Place = place
                 };
-                DbContext.AddTicket(ticket);
+                var ret = DbContext.AddTicket(ticket);
+                if (ret) MessageBox.Show("Билет выписан.");
+                else MessageBox.Show("Билет не выписан.");
+
+                cbSeat.SelectedItem= null;
+                cbSeat.Items.Remove(place); 
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
