@@ -53,6 +53,18 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CarTypeDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CarTypeDetailForm.Designer.cs">
+      <DependentUpon>CarTypeDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\CarTypeListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CarTypeListForm.Designer.cs">
+      <DependentUpon>CarTypeListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CityChoiceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +149,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CarTypeDetailForm.resx">
+      <DependentUpon>CarTypeDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CarTypeListForm.resx">
+      <DependentUpon>CarTypeListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CityChoiceForm.resx">
       <DependentUpon>CityChoiceForm.cs</DependentUpon>

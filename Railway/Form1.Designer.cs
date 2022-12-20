@@ -134,6 +134,7 @@
             this.типВагонаToolStripMenuItem.Name = "типВагонаToolStripMenuItem";
             this.типВагонаToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.типВагонаToolStripMenuItem.Text = "Тип вагона";
+            this.типВагонаToolStripMenuItem.Click += new System.EventHandler(this.типВагонаToolStripMenuItem_Click);
             // 
             // маршрутToolStripMenuItem
             // 

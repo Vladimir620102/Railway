@@ -1204,10 +1204,157 @@ WHERE t.[routeId] = @RouteId
                     connection.Close();
             }
         }
-        #endregion CarType
 
-        #region Ticket
-        public static List<Route> SelectTrainForTicket(int fromStationId, int toStationId)
+        public static bool AddCarType(CarType carType)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "INSERT INTO CAR_TYPE (Name, Capacity) VALUES (@Name, @Capacity)";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                SqlParameter nameParam = new SqlParameter
+                {
+                    ParameterName = "@Name",
+                    Value = carType.Name
+                };
+                SqlParameter capacityParam = new SqlParameter
+                {
+                    ParameterName = "@Capacity",
+                    Value = carType.Capacity
+                };
+                command.Parameters.Add(nameParam);
+                command.Parameters.Add(capacityParam);
+
+                transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+
+                var count = command.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+
+        public static bool UpdateCarType(CarType carType)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "Update CAR_TYPE set Name = @Name, Capacity = @Capacity where Id = @Id";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                SqlParameter nameParam = new SqlParameter
+                {
+                    ParameterName = "@Name",
+                    Value = carType.Name
+                };
+                SqlParameter capacityParam = new SqlParameter
+                {
+                    ParameterName = "@Capacity",
+                    Value = carType.Capacity
+                };
+                SqlParameter idParam = new SqlParameter
+                {
+                    ParameterName = "@Id",
+                    Value = carType.Id
+                };
+
+                command.Parameters.Add(nameParam);
+                command.Parameters.Add(capacityParam);
+                command.Parameters.Add(idParam);
+
+                transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+
+                var count = command.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+        }
+
+        public static bool DeleteCarType(int carTypeId)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "DELETE FROM CAR_TYPE where Id = @Id";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                SqlParameter idParam = new SqlParameter
+                {
+                    ParameterName = "@Id",
+                    Value = carTypeId
+                };
+
+                command.Parameters.Add(idParam);
+
+                transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+
+                var count = command.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+
+        }
+            #endregion CarType
+
+            #region Ticket
+            public static List<Route> SelectTrainForTicket(int fromStationId, int toStationId)
         {
             List<Route> list = new List<Route>();
             SqlConnection connection = null;

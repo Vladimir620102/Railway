@@ -67,5 +67,11 @@ namespace Railway
             TrainListForm trainListForm = new TrainListForm();
             trainListForm.ShowDialog();
         }
+
+        private void типВагонаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CarTypeListForm carTypeListForm=new CarTypeListForm();
+            carTypeListForm.ShowDialog();   
+        }
     }
 }
