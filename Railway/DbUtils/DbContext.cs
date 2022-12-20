@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Railway.Properties;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Linq;
+using Railway.Model;
 
 namespace Railway.DbUtils
 {
@@ -1334,7 +1335,12 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "SELECT seat_number from SEAT WHERE car_number = @car_number   AND train_id = @train_id";
+                string sql =
+@"SELECT s.seat_number FROM seat s
+WHERE s.train_id = @train_id and s.car_number = @car_number
+AND NOT EXISTS( SELECT 1 FROM TICKET t1 where t1.train_id = @train_id and t1.seat_id = s.id)
+";
+
                 SqlCommand command = new SqlCommand(sql, connection);
 
                 
@@ -1378,6 +1384,81 @@ WHERE t.[routeId] = @RouteId
             }
 
             return null;
+        }
+
+        public static bool AddTicket(Ticket ticket)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "ticketservice.insert_ticket";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
+                SqlParameter trainIdParam = new SqlParameter
+                {
+                    ParameterName = "@train_id",
+                    Value = ticket.TrainId
+                };
+                SqlParameter vagonParam = new SqlParameter
+                {
+                    ParameterName = "@car_number",
+                    Value = ticket.Vagon
+                };
+
+                SqlParameter seatParam = new SqlParameter
+                {
+                    ParameterName = "@seat_number",
+                    Value = ticket.Place
+                };
+
+                SqlParameter departureStationParam = new SqlParameter
+                {
+                    ParameterName = "@this_boarding_st_id",
+                    Value = ticket.DepartureStationId
+                };
+                SqlParameter arrivalStationParam = new SqlParameter
+                {
+                    ParameterName = "@this_destination_st_id",
+                    Value = ticket.ArrivalStationId
+                };
+                SqlParameter passangerParam = new SqlParameter
+                {
+                    ParameterName = "@passanger",
+                    Value = ticket.Passanger
+                };
+
+                command.Parameters.Add(passangerParam);
+                command.Parameters.Add(trainIdParam);
+                command.Parameters.Add(vagonParam);
+                command.Parameters.Add(seatParam);
+                command.Parameters.Add(departureStationParam);
+                command.Parameters.Add(arrivalStationParam);
+
+                transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+
+                var count = command.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
         }
         #endregion Ticket
 

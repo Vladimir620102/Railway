@@ -44,11 +44,14 @@
             this.cbCar_Type = new System.Windows.Forms.ComboBox();
             this.cbSeat = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbPassanger = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.cbVagon = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btOk = new System.Windows.Forms.Button();
+            this.btCancel = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -56,7 +59,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(792, 46);
+            this.panel1.Size = new System.Drawing.Size(703, 46);
             this.panel1.TabIndex = 1;
             // 
             // panel2
@@ -199,12 +202,12 @@
             this.label8.TabIndex = 10;
             this.label8.Text = "Пассажир";
             // 
-            // textBox1
+            // tbPassanger
             // 
-            this.textBox1.Location = new System.Drawing.Point(152, 334);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(520, 20);
-            this.textBox1.TabIndex = 10;
+            this.tbPassanger.Location = new System.Drawing.Point(152, 334);
+            this.tbPassanger.Name = "tbPassanger";
+            this.tbPassanger.Size = new System.Drawing.Size(520, 20);
+            this.tbPassanger.TabIndex = 10;
             // 
             // label9
             // 
@@ -226,20 +229,42 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btCancel);
+            this.panel3.Controls.Add(this.btOk);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 376);
+            this.panel3.Location = new System.Drawing.Point(0, 402);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(792, 85);
+            this.panel3.Size = new System.Drawing.Size(703, 59);
             this.panel3.TabIndex = 12;
+            // 
+            // btOk
+            // 
+            this.btOk.Location = new System.Drawing.Point(465, 20);
+            this.btOk.Name = "btOk";
+            this.btOk.Size = new System.Drawing.Size(75, 23);
+            this.btOk.TabIndex = 0;
+            this.btOk.Text = "Сохранить";
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
+            // 
+            // btCancel
+            // 
+            this.btCancel.Location = new System.Drawing.Point(597, 20);
+            this.btCancel.Name = "btCancel";
+            this.btCancel.Size = new System.Drawing.Size(75, 23);
+            this.btCancel.TabIndex = 1;
+            this.btCancel.Text = "Отменить";
+            this.btCancel.UseVisualStyleBackColor = true;
+            this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
             // 
             // TicketForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 461);
+            this.ClientSize = new System.Drawing.Size(703, 461);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.cbVagon);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbPassanger);
             this.Controls.Add(this.cbSeat);
             this.Controls.Add(this.cbCar_Type);
             this.Controls.Add(this.cbTrain);
@@ -254,6 +279,7 @@
             this.Text = "Выписка билетов";
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,8 +303,10 @@
         private System.Windows.Forms.ComboBox cbSeat;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbPassanger;
         private System.Windows.Forms.ComboBox cbVagon;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Button btCancel;
+        private System.Windows.Forms.Button btOk;
     }
 }

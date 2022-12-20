@@ -115,5 +115,48 @@ namespace Railway.Forms
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
+
+        private void btCancel_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void btOk_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(tbPassanger.Text))
+            {
+                MessageBox.Show("Введите ФИО пассажира!");
+                return;
+            }
+
+            // выписываем билет
+            try {
+                DateTime tickeDate = dateTimePicker1.Value;
+                string departureStationName = ((Station)cbDeparture.SelectedItem).Name;
+                int departureStationId = ((Station)cbDeparture.SelectedItem).Id;
+                int arrivalStationId = ((Station)cbArrival.SelectedItem).Id;
+                string arrivalStationName = ((Station)cbArrival.SelectedItem).Name;
+                int numberOfTrain = ((Route)cbTrain.SelectedItem).Number;
+                int vagon = ((int)cbVagon.SelectedItem);
+                int place = ((int)cbSeat.SelectedItem);
+                string passanger = tbPassanger.Text;
+
+                Ticket ticket = new Ticket()
+                {
+                    DepartureDate = tickeDate,
+                    DepartureStationId=departureStationId,
+                    DepartureStation = departureStationName,
+                    ArrivalStationId=arrivalStationId,
+                    ArrivalStation = arrivalStationName,
+                    Passanger = passanger,
+                    Train = numberOfTrain,
+                    TrainId = currentTrainId,
+                    Vagon = vagon,
+                    Place = place
+                };
+                DbContext.AddTicket(ticket);
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            }
     }
 }
