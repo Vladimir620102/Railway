@@ -110,14 +110,15 @@ namespace Railway.Forms
 
             foreach (var r in RouteItems)
             {
-                //if (r.Station == ((Station)cbDeparture.SelectedItem).Id
-                //    || r.Station == ((Station)cbArrival.SelectedItem).Id)
-                //    continue;
                 var st = DbContext.GetStation(r.Station);
+                //dataGridView1.Rows.Add(-1, r.Station, st.Name,
+                //    r.ArrivalTime.HasValue ? r.ArrivalTime.Value.ToShortTimeString() : string.Empty,
+                //    r.DepartureTime.HasValue ? r.DepartureTime.Value.ToShortTimeString() : string.Empty,
+                //    r.ArrivalTime == null, r.DepartureTime == null);
                 dataGridView1.Rows.Add(-1, r.Station, st.Name,
-                    r.ArrivalTime.HasValue ? r.ArrivalTime.Value.ToShortTimeString() : string.Empty,
-                    r.DepartureTime.HasValue ? r.DepartureTime.Value.ToShortTimeString() : string.Empty,
-                    r.ArrivalTime == null, r.DepartureTime == null);
+                  r.ArrivalTime.HasValue ? r.ArrivalTime.Value.ToShortTimeString(): string.Empty,
+                  r.DepartureTime.HasValue ? r.DepartureTime.Value.ToShortTimeString() : string.Empty,
+                  r.ArrivalTime == null, r.DepartureTime == null);
             }
             if (currentPosition > -1 && dataGridView1.Rows.Count > 0)
                 dataGridView1.CurrentCell = dataGridView1.Rows[currentPosition].Cells[2];
@@ -253,15 +254,17 @@ namespace Railway.Forms
 
                 SetStation(itemForm.cbStation);
 
+                DateTime d = DateTime.Now.Date;
+
                 foreach (var s in itemForm.cbStation.Items)
                 {
                     if (((Station)s).Id == stationId)
                     {
                         itemForm.cbStation.SelectedItem = s;
-                        itemForm.dtpDepartureDate.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Departure"].Value);
-                        itemForm.dtpDepartureTime.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Departure"].Value);
-                        itemForm.dtpArrivalDate.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Arrived"].Value);
-                        itemForm.dtpArrivalTime.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Arrived"].Value);
+                        //itemForm.dtpDepartureDate.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Departure"].Value);
+                        //itemForm.dtpDepartureTime.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Departure"].Value);
+                        //itemForm.dtpArrivalDate.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Arrived"].Value);
+                        //itemForm.dtpArrivalTime.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Arrived"].Value);
                     }
                 }
 
