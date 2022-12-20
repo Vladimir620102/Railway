@@ -15,6 +15,7 @@ namespace Railway.Forms
 {
     public partial class TicketForm : Form
     {
+        int currentTrainId = -1;
         public TicketForm()
         {
             InitializeComponent();
@@ -52,6 +53,7 @@ namespace Railway.Forms
                 var to_id = ((Station)cbArrival.SelectedItem).Id;
 
                 var list = DbContext.SelectTrainForTicket(from_id, to_id);
+                if (list == null) return;
                 cbTrain.Items.Clear();  
                 foreach(var t in list)
                 {
@@ -65,17 +67,53 @@ namespace Railway.Forms
 
         private void cbTrain_SelectedValueChanged(object sender, EventArgs e)
         {
-            
+            //if (cbTrain.SelectedItem != null)
+            //    currentTrain = (Train)cbTrain.SelectedItem;
         }
 
         private void cbCar_Type_SelectedValueChanged(object sender, EventArgs e)
         {
-            // Получить список вагонов
-            CarType ct = (CarType)cbCar_Type.SelectedItem;
-            if (ct == null) return;
-            Route route = (Route)cbTrain.SelectedItem;
-            if(route == null) return;
+            try
+            {
+                // Получить список вагонов
+                CarType ct = (CarType)cbCar_Type.SelectedItem;
+                if (ct == null) return;
+                Route route = (Route)cbTrain.SelectedItem;
+                if (route == null) return;
 
+                currentTrainId = DbContext.GetTrainId(route, dateTimePicker1.Value);
+
+                var list = DbContext.SelectByCarType(currentTrainId, ct.Id);
+                if (list == null) return;
+                cbVagon.Items.Clear();
+                foreach (var t in list)
+                {
+                    cbVagon.Items.Add(t);
+                }
+            }catch(Exception ex) { MessageBox.Show(ex.Message); }       
+        }
+
+        private void cbVagon_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if(cbVagon.SelectedItem==null)return;
+            try
+            {
+                // Получить список мест
+                int number = (int)cbVagon.SelectedItem;
+                Route route = (Route)cbTrain.SelectedItem;
+                if (route == null) return;
+
+                currentTrainId = DbContext.GetTrainId(route, dateTimePicker1.Value);
+
+                var list = DbContext.SelectByVagon(currentTrainId, number);
+                if (list == null) return;
+                cbSeat.Items.Clear();
+                foreach (var t in list)
+                {
+                    cbSeat.Items.Add(t);
+                }
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
     }
 }

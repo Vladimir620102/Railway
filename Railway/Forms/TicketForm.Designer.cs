@@ -42,11 +42,11 @@
             this.cbDeparture = new System.Windows.Forms.ComboBox();
             this.cbTrain = new System.Windows.Forms.ComboBox();
             this.cbCar_Type = new System.Windows.Forms.ComboBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.cbSeat = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbVagon = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -182,13 +182,13 @@
             this.cbCar_Type.TabIndex = 8;
             this.cbCar_Type.SelectedValueChanged += new System.EventHandler(this.cbCar_Type_SelectedValueChanged);
             // 
-            // comboBox5
+            // cbSeat
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(152, 298);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(176, 21);
-            this.comboBox5.TabIndex = 9;
+            this.cbSeat.FormattingEnabled = true;
+            this.cbSeat.Location = new System.Drawing.Point(152, 298);
+            this.cbSeat.Name = "cbSeat";
+            this.cbSeat.Size = new System.Drawing.Size(176, 21);
+            this.cbSeat.TabIndex = 9;
             // 
             // label8
             // 
@@ -215,13 +215,14 @@
             this.label9.TabIndex = 11;
             this.label9.Text = "Номер вагона";
             // 
-            // comboBox1
+            // cbVagon
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(152, 262);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(176, 21);
-            this.comboBox1.TabIndex = 11;
+            this.cbVagon.FormattingEnabled = true;
+            this.cbVagon.Location = new System.Drawing.Point(152, 262);
+            this.cbVagon.Name = "cbVagon";
+            this.cbVagon.Size = new System.Drawing.Size(176, 21);
+            this.cbVagon.TabIndex = 11;
+            this.cbVagon.SelectedValueChanged += new System.EventHandler(this.cbVagon_SelectedValueChanged);
             // 
             // panel3
             // 
@@ -237,9 +238,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(792, 461);
             this.Controls.Add(this.panel3);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cbVagon);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.comboBox5);
+            this.Controls.Add(this.cbSeat);
             this.Controls.Add(this.cbCar_Type);
             this.Controls.Add(this.cbTrain);
             this.Controls.Add(this.cbDeparture);
@@ -273,11 +274,11 @@
         private System.Windows.Forms.ComboBox cbDeparture;
         private System.Windows.Forms.ComboBox cbTrain;
         private System.Windows.Forms.ComboBox cbCar_Type;
-        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.ComboBox cbSeat;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbVagon;
         private System.Windows.Forms.Panel panel3;
     }
 }

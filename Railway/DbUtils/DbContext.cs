@@ -1105,6 +1105,58 @@ WHERE t.[routeId] = @RouteId
 
         }
 
+        public static int GetTrainId(Route route, DateTime date)
+        {
+
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "SELECT  [id] FROM [railway2].[dbo].[TRAIN] as tr  WHERE tr.number = @Number and Convert(Date, tr.[departure]) = Convert(Date, @Date)";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                SqlParameter NumberParam = new SqlParameter
+                {
+                    ParameterName = "@Number",
+                    Value = route.Number
+                };
+
+                SqlParameter dateParam = new SqlParameter
+                {
+                    ParameterName = "@Date",
+                    Value = date
+                };
+
+                command.Parameters.Add(NumberParam);
+                command.Parameters.Add(dateParam);
+
+                int trainId = -1;
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) // построчно считываем данные
+                {
+                    object id = reader.GetValue(0);
+                    trainId = (int)id;
+                }
+                return trainId;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return -1;
+        }
+
         #endregion Train
 
         #region CarType
@@ -1157,7 +1209,6 @@ WHERE t.[routeId] = @RouteId
         public static List<Route> SelectTrainForTicket(int fromStationId, int toStationId)
         {
             List<Route> list = new List<Route>();
-            SqlTransaction transaction = null;
             SqlConnection connection = null;
             try
             {
@@ -1202,6 +1253,113 @@ WHERE t.[routeId] = @RouteId
                         ArrivalStationName = arrivalName == DBNull.Value ? "" : (string)arrivalName
                     };
                     list.Add(c);
+                }
+                return list;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+
+            return list;
+        }
+
+        public static List<int> SelectByCarType(int trainId, int carType)
+        {
+            List<int> list = new List<int>();
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "SELECT DISTINCT car_number from SEAT WHERE car_type_id = @car_type AND train_id =  @train_id";
+                SqlCommand command = new SqlCommand(sql, connection);
+                
+                SqlParameter carParam = new SqlParameter
+                {
+                    ParameterName = "@car_type",
+                    Value = carType
+                };
+
+                SqlParameter trainParam = new SqlParameter
+                {
+                    ParameterName = "@train_Id",
+                    Value = trainId
+                };
+
+                command.Parameters.Add(carParam);
+                command.Parameters.Add(trainParam);
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) // построчно считываем данные
+                {
+                    
+                    object number = reader.GetValue(0);
+                    int temp = (number==DBNull.Value ? -1 : (int)number);
+                    list.Add(temp);
+                }
+                return list;
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+
+            return null;
+        }
+
+        public static List<int> SelectByVagon(int trainId, int vagon)
+        {
+            List<int> list = new List<int>();
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "SELECT seat_number from SEAT WHERE car_number = @car_number   AND train_id = @train_id";
+                SqlCommand command = new SqlCommand(sql, connection);
+
+                
+                SqlParameter carParam = new SqlParameter
+                {
+                    ParameterName = "@car_number",
+                    Value = vagon
+                };
+
+                SqlParameter trainParam = new SqlParameter
+                {
+                    ParameterName = "@train_Id",
+                    Value = trainId
+                };
+
+                command.Parameters.Add(carParam);
+                command.Parameters.Add(trainParam);
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) // построчно считываем данные
+                {
+
+                    object number = reader.GetValue(0);
+                    int temp = (number == DBNull.Value ? -1 : (int)number);
+                    list.Add(temp);
                 }
                 return list;
             }
