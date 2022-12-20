@@ -71,6 +71,10 @@ namespace Railway.Forms
         private void cbCar_Type_SelectedValueChanged(object sender, EventArgs e)
         {
             // Получить список вагонов
+            CarType ct = (CarType)cbCar_Type.SelectedItem;
+            if (ct == null) return;
+            Route route = (Route)cbTrain.SelectedItem;
+            if(route == null) return;
 
         }
     }
