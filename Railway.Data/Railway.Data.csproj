@@ -64,6 +64,7 @@
     <Content Include="UpdateSQL\0009.sql" />
     <Content Include="UpdateSQL\0010.sql" />
     <Content Include="UpdateSQL\0011.sql" />
+    <Content Include="UpdateSQL\0012.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
