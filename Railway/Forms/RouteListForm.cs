@@ -40,13 +40,12 @@ namespace Railway.Forms
                 SetStations(rdf);
                 var dr = rdf.ShowDialog();
                 if (dr != DialogResult.OK) return;
+                if (rdf.cbArrival.SelectedItem == null
+                    || rdf.cbDeparture.SelectedItem == null) return;
 
-
-                if (string.IsNullOrEmpty(rdf.cbArrival.SelectedText)
-                    || string.IsNullOrEmpty(rdf.cbDeparture.SelectedText)) return;
                 var number = Convert.ToInt32(rdf.tbNumber.Text);
-                int fromStationId = Convert.ToInt32(((RouteItem)(rdf.cbDeparture.SelectedItem)).Station);
-                int toStationId = Convert.ToInt32(((RouteItem)(rdf.cbArrival.SelectedItem)).Station);
+                int fromStationId = Convert.ToInt32(((Station)(rdf.cbDeparture.SelectedItem)).Id);
+                int toStationId = Convert.ToInt32(((Station)(rdf.cbArrival.SelectedItem)).Id);
                 var route = new Route()
                 {
                     Number = number,
