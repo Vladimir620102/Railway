@@ -95,6 +95,12 @@
     <Compile Include="Forms\CountryListForm.Designer.cs">
       <DependentUpon>CountryListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RouteDetailForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -142,6 +148,18 @@
     </Compile>
     <Compile Include="Forms\TrainListForm.Designer.cs">
       <DependentUpon>TrainListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UserDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserDetailForm.Designer.cs">
+      <DependentUpon>UserDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UserListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UserListForm.Designer.cs">
+      <DependentUpon>UserListForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\Helper.cs" />
     <Compile Include="Model\Ticket.cs" />
@@ -194,6 +212,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrainListForm.resx">
       <DependentUpon>TrainListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserDetailForm.resx">
+      <DependentUpon>UserDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UserListForm.resx">
+      <DependentUpon>UserListForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
