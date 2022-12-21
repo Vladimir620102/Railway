@@ -150,7 +150,9 @@ namespace Railway.Forms
                         break;
                     }
                 }
-
+                //
+                var day = (rdf.dtpArrival.Value.Date - rdf.dtpDeparture.Value.Date).Days;
+                if (day > 0) rdf.tbArrival.Text = day.ToString();
                 var dr = rdf.ShowDialog();
                 if (dr != DialogResult.OK) return;
 

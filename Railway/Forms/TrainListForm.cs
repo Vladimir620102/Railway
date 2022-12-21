@@ -90,14 +90,37 @@ namespace Railway.Forms
         {
             try
             {
+                int currentPosition = -1;
+                if (dataGridView1.CurrentRow != null)
+                {
+                    currentPosition = dataGridView1.CurrentRow.Index;
+                }
                 SetTrains(routeId);
                 dataGridView1.Rows.Clear();
+
+                //RouteItems.Sort(delegate (RouteItem r1, RouteItem r2)
+                //{
+                //    if (r1.ArrivalTime == null && r2.ArrivalTime == null) return 0;
+                //    else if (r1.ArrivalTime == null) return -1;
+                //    else if (r2.ArrivalTime == null) return 1;
+                //    else if (r2.ArrivalTime == r1.ArrivalTime) return 0;
+                //    else return r1.ArrivalTime > r2.ArrivalTime ? 1 : -1;
+                //});
+
                 foreach (var t in DbContext.Trains)
                 {
                     dataGridView1.Rows.Add(t.Id, t.Number,
                         t.DepartureStationId, t.DepartureStationName,
                         t.ArrivalStationId, t.ArrivalStationName,
                         t.Departure, t.Arrival);
+                }
+
+                dataGridView1.Sort(dataGridView1.Columns[6], ListSortDirection.Ascending);
+
+                if (currentPosition > -1 && dataGridView1.Rows.Count > 0)
+                {
+                    if (currentPosition >= dataGridView1.Rows.Count) currentPosition = dataGridView1.Rows.Count - 1;
+                    dataGridView1.CurrentCell = dataGridView1.Rows[currentPosition].Cells[1];
                 }
             }
             catch (Exception ex)
@@ -133,18 +156,25 @@ namespace Railway.Forms
                 train.Number = r.Number;
                 train.ArrivalStationId = r.ArrivalStationId;
                 train.DepartureStationId = r.DepartureStationId;
+
+                var dataDeparture = GetDateTime(r);
+                if(dataDeparture == null)
+                {
+                    MessageBox.Show("Не найдено время отправления маршрута");
+                    return;
+                }
+
+                var days = (tdf.dtpDate.Value.Date - dataDeparture.Value.Date).Days;
                 int d1=0, d2=0;
                 foreach (var ri in r.Items)
                 {
                     if (ri.DepartureTime == null)
                     {
-                        d1 = (tdf.dtpDate.Value - ri.ArrivalTime.Value).Days;
-                        train.Arrival = ri.ArrivalTime.Value.AddDays(d1);
+                        train.Arrival = ri.ArrivalTime.Value.AddDays(days);
                     }
                     if (ri.ArrivalTime == null)
                     {
-                        d2 = (tdf.dtpDate.Value - ri.DepartureTime.Value).Days;
-                        train.Departure = ri.DepartureTime.Value.AddDays(d2);
+                        train.Departure = ri.DepartureTime.Value.AddDays(days);
                     }
                 }
                 if (d1 < d2) train.Arrival = train.Arrival.AddDays(1);
@@ -159,6 +189,14 @@ namespace Railway.Forms
             UpdateGrid(r.Id);
         }
 
-
+        DateTime? GetDateTime(Route route)
+        {
+            foreach(var ri in route.Items)
+            {
+                if (!ri.ArrivalTime.HasValue)
+                    return ri.DepartureTime.Value;
+            }
+            return null;
+        }
     }
 }

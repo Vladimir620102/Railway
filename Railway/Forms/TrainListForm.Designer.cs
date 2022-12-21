@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrainListForm));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbRoute = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cbRoute = new System.Windows.Forms.ComboBox();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Number = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DepartureStationId = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,6 +64,24 @@
             this.panel1.Size = new System.Drawing.Size(942, 78);
             this.panel1.TabIndex = 0;
             // 
+            // cbRoute
+            // 
+            this.cbRoute.FormattingEnabled = true;
+            this.cbRoute.Location = new System.Drawing.Point(112, 26);
+            this.cbRoute.Name = "cbRoute";
+            this.cbRoute.Size = new System.Drawing.Size(558, 21);
+            this.cbRoute.TabIndex = 1;
+            this.cbRoute.SelectedValueChanged += new System.EventHandler(this.cbRoute_SelectedValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(51, 26);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Маршрут";
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.dataGridView1);
@@ -91,24 +109,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(942, 347);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(51, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Маршрут";
-            // 
-            // cbRoute
-            // 
-            this.cbRoute.FormattingEnabled = true;
-            this.cbRoute.Location = new System.Drawing.Point(112, 26);
-            this.cbRoute.Name = "cbRoute";
-            this.cbRoute.Size = new System.Drawing.Size(558, 21);
-            this.cbRoute.TabIndex = 1;
-            this.cbRoute.SelectedValueChanged += new System.EventHandler(this.cbRoute_SelectedValueChanged);
             // 
             // Id
             // 

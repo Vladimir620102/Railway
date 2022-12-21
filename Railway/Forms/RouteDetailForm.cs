@@ -28,6 +28,7 @@ namespace Railway.Forms
                 RouteItems.AddRange(_route.Items);
             }
         }
+        public DateTime DeparureDate { get; set; }
 
         RouteItem routeItemArrival = new RouteItem();
         RouteItem routeItemDeparture = new RouteItem();
@@ -38,6 +39,7 @@ namespace Railway.Forms
             tsbDelete.Enabled = false;
             tsbEdit.Enabled = false;
             _routeItems.Clear();
+            tbArrival.Text= string.Empty;
         }
 
         private void tsbAdd_Click(object sender, EventArgs e)
@@ -46,27 +48,41 @@ namespace Railway.Forms
             {
                 RouteItemForm itemForm = new RouteItemForm();
                 itemForm.labelTrain.Text = $"Поезд № {tbNumber.Text} {((Station)cbDeparture.SelectedItem).Name} - {((Station)cbArrival.SelectedItem).Name}";
-
                 SetStation(itemForm.cbStation);
+                itemForm.dtpArrivalTime.Value = dtpDeparture.Value;
+                itemForm.dtpDepartureTime.Value = dtpDeparture.Value;
+                
                 if (itemForm.ShowDialog() != DialogResult.OK) return;
 
                 var stationId = ((Station)itemForm.cbStation.SelectedItem).Id;
-                if (stationId == ((Station)cbDeparture.SelectedItem).Id) return;
-                if (stationId == ((Station)cbArrival.SelectedItem).Id) return;
+                if (stationId == ((Station)cbDeparture.SelectedItem).Id
+                    || stationId == ((Station)cbArrival.SelectedItem).Id)
+                {
+                    MessageBox.Show("Промежуточная станция не может совпадать с начальной или кнечной");
+                    return;
+                }
 
-                var arrivalDate = new DateTime(itemForm.dtpArrivalDate.Value.Year,
-                    itemForm.dtpArrivalDate.Value.Month,
-                    itemForm.dtpArrivalDate.Value.Day,
-                    itemForm.dtpArrivalTime.Value.Hour,
-                    itemForm.dtpArrivalTime.Value.Minute,
-                    itemForm.dtpArrivalTime.Value.Second
+                var countDayArrival = string.IsNullOrWhiteSpace(itemForm.tbArrival.Text) ? 0 : Convert.ToInt32(itemForm.tbArrival.Text);
+                var countDayDeparture = string.IsNullOrWhiteSpace(itemForm.tbDeparture.Text) ? 0 : Convert.ToInt32(itemForm.tbDeparture.Text);
+
+                var dataArrival = dtpDeparture.Value.Date.AddDays(countDayArrival);
+                var dataDeparture = dtpDeparture.Value.Date.AddDays(countDayDeparture);
+                var hourArrival = itemForm.dtpArrivalTime.Value.Hour;
+                var minuteArrival = itemForm.dtpArrivalTime.Value.Minute;
+                var hourDeparture= itemForm.dtpDepartureTime.Value.Hour;
+                var minuteDeparture = itemForm.dtpDepartureTime.Value.Minute;
+
+                var arrivalDate = new DateTime(dataArrival.Year,
+                    dataArrival.Month,
+                    dataArrival.Day,
+                    hourArrival,
+                    minuteArrival, 0
                     );
-                var departureDate = new DateTime(itemForm.dtpDepartureDate.Value.Year,
-                    itemForm.dtpDepartureDate.Value.Month,
-                    itemForm.dtpDepartureDate.Value.Day,
-                    itemForm.dtpDepartureTime.Value.Hour,
-                    itemForm.dtpDepartureTime.Value.Minute,
-                    itemForm.dtpDepartureTime.Value.Second
+                var departureDate = new DateTime(dataDeparture.Year,
+                    dataDeparture.Month,
+                    dataDeparture.Day,
+                    hourDeparture,
+                    minuteDeparture, 0
                 );
                 AddRouteItems(stationId, arrivalDate, departureDate);
 
@@ -169,6 +185,20 @@ namespace Railway.Forms
                 routeItemDeparture.ArrivalTime = null;
                 routeItemDeparture.DepartureTime = dtpDeparture.Value;
                 routeItemArrival.Station = ((Station)cbArrival.SelectedItem).Id;
+
+                var countDayArrival = string.IsNullOrWhiteSpace(tbArrival.Text) ? 0 : Convert.ToInt32(tbArrival.Text);
+
+                var dataArrival = dtpDeparture.Value.Date.AddDays(countDayArrival);
+                var hourArrival = dtpArrival.Value.Hour;
+                var minuteArrival = dtpArrival.Value.Minute;
+
+                var arrivalDate = new DateTime(dataArrival.Year,
+                    dataArrival.Month,
+                    dataArrival.Day,
+                    hourArrival,
+                    minuteArrival, 0
+                    );
+
                 routeItemArrival.ArrivalTime = dtpArrival.Value;
                 routeItemArrival.DepartureTime = null;
 
@@ -221,7 +251,6 @@ namespace Railway.Forms
                 route.ArrivalStationId = ((Station)cbArrival.SelectedItem).Id;
                 route.ArrivalStationName = ((Station)cbArrival.SelectedItem).Name;
                 route.Number = Convert.ToInt32(tbNumber.Text);
-                //route.Name = $"Поезд № {tbNumber.Text} {((Station)cbDeparture.SelectedItem).Name} - {((Station)cbArrival.SelectedItem).Name}";
                 if(CurrentRoute != null)
                 route.Id = CurrentRoute.Id;
 
@@ -261,10 +290,24 @@ namespace Railway.Forms
                     if (((Station)s).Id == stationId)
                     {
                         itemForm.cbStation.SelectedItem = s;
-                        //itemForm.dtpDepartureDate.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Departure"].Value);
-                        //itemForm.dtpDepartureTime.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Departure"].Value);
-                        //itemForm.dtpArrivalDate.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Arrived"].Value);
-                        //itemForm.dtpArrivalTime.Value = (DateTime)(dataGridView1.CurrentRow.Cells["Arrived"].Value);
+
+                        var routeItem = RouteItems.FirstOrDefault(ri => ri.Station == stationId);
+                        if (routeItem == null)
+                        {
+                            MessageBox.Show("Ошибка в данных промежуточной станции!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        var depTime = SplitTime(dataGridView1.CurrentRow.Cells["Departure"].Value.ToString());
+                        //var depDate = new DateTime( DeparureDate.Date.Year, DeparureDate.Date.Month,DeparureDate.Date.Day, depTime.Item1,depTime.Item2,0);
+                        itemForm.dtpDepartureTime.Value = routeItem.DepartureTime.Value;
+                        var arrTime = SplitTime(dataGridView1.CurrentRow.Cells["Arrived"].Value.ToString());
+                        //var arrDate = new DateTime(DeparureDate.Date.Year, DeparureDate.Month, DeparureDate.Day, arrTime.Item1, arrTime.Item2, 0);
+                        itemForm.dtpArrivalTime.Value = routeItem.ArrivalTime.Value;
+                        var day = (itemForm.dtpArrivalTime.Value.Date - dtpDeparture.Value.Date).Days;
+                        if (day > 0) itemForm.tbArrival.Text = day.ToString();
+                        day = (itemForm.dtpDepartureTime.Value.Date - dtpDeparture.Value.Date).Days;
+                        if (day > 0) itemForm.tbDeparture.Text = day.ToString();
                     }
                 }
 
@@ -274,19 +317,27 @@ namespace Railway.Forms
                 if (stationId == ((Station)cbDeparture.SelectedItem).Id) return;
                 if (stationId == ((Station)cbArrival.SelectedItem).Id) return;
 
-                var arrivalDate = new DateTime(itemForm.dtpArrivalDate.Value.Year,
-                    itemForm.dtpArrivalDate.Value.Month,
-                    itemForm.dtpArrivalDate.Value.Day,
-                    itemForm.dtpArrivalTime.Value.Hour,
-                    itemForm.dtpArrivalTime.Value.Minute,
-                    itemForm.dtpArrivalTime.Value.Second
+                var countDayArrival = string.IsNullOrWhiteSpace(itemForm.tbArrival.Text) ? 0 : Convert.ToInt32(itemForm.tbArrival.Text);
+                var countDayDeparture = string.IsNullOrWhiteSpace(itemForm.tbDeparture.Text) ? 0 : Convert.ToInt32(itemForm.tbDeparture.Text);
+
+                var dataArrival = dtpDeparture.Value.Date.AddDays(countDayArrival);
+                var dataDeparture = dtpDeparture.Value.Date.AddDays(countDayDeparture);
+                var hourArrival = itemForm.dtpArrivalTime.Value.Hour;
+                var minuteArrival = itemForm.dtpArrivalTime.Value.Minute;
+                var hourDeparture = itemForm.dtpDepartureTime.Value.Hour;
+                var minuteDeparture = itemForm.dtpDepartureTime.Value.Minute;
+
+                var arrivalDate = new DateTime(dataArrival.Year,
+                    dataArrival.Month,
+                    dataArrival.Day,
+                    hourArrival,
+                    minuteArrival, 0
                     );
-                var departureDate = new DateTime(itemForm.dtpDepartureDate.Value.Year,
-                    itemForm.dtpDepartureDate.Value.Month,
-                    itemForm.dtpDepartureDate.Value.Day,
-                    itemForm.dtpDepartureTime.Value.Hour,
-                    itemForm.dtpDepartureTime.Value.Minute,
-                    itemForm.dtpDepartureTime.Value.Second
+                var departureDate = new DateTime(dataDeparture.Year,
+                    dataDeparture.Month,
+                    dataDeparture.Day,
+                    hourDeparture,
+                    minuteDeparture, 0
                 );
                 SetRouteItems(stationId, arrivalDate, departureDate);
 
@@ -301,6 +352,12 @@ namespace Railway.Forms
         private void tsbExit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        (int, int) SplitTime(string time)
+        {
+            string[] temp = time.Split(':');
+            return (Convert.ToInt32( temp[0]), Convert.ToInt32(temp[1]));
         }
     }
 }
