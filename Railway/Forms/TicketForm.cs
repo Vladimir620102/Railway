@@ -34,11 +34,8 @@ namespace Railway.Forms
                 cbDeparture.Items.Add(s);
             }
             cbDeparture.DisplayMember = "Name";
-            cbCar_Type.Items.Clear();
-            DbContext.SetCarType();
-            foreach (var s in DbContext.CarTypes)      
-                cbCar_Type.Items.Add(s) ;
-            cbCar_Type.DisplayMember = "Name";
+
+            SetCar_Types();           
         }
 
         private void cbArrival_SelectedValueChanged(object sender, EventArgs e)
@@ -60,7 +57,7 @@ namespace Railway.Forms
                     cbTrain.Items.Add(t);
                 }
                 cbTrain.DisplayMember = "Name";
-
+                cbCar_Type.SelectedItem = null;
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }    
         }
@@ -82,15 +79,32 @@ namespace Railway.Forms
                 if (route == null) return;
 
                 currentTrainId = DbContext.GetTrainId(route, dateTimePicker1.Value);
-
+                if (currentTrainId == -1)
+                {
+                    MessageBox.Show($"{route.Name} на {dateTimePicker1.Value.ToShortDateString()} не найден");
+                    return;
+                }
                 var list = DbContext.SelectByCarType(currentTrainId, ct.Id);
-                if (list == null) return;
+                if (list == null || list.Count == 0)
+                {
+                    MessageBox.Show($"{route.Name} на {dateTimePicker1.Value.ToShortDateString()}, вагон {ct.Name}: мест нет");
+                    return;
+                }
                 cbVagon.Items.Clear();
                 foreach (var t in list)
                 {
                     cbVagon.Items.Add(t);
                 }
             }catch(Exception ex) { MessageBox.Show(ex.Message); }       
+        }
+
+        void SetCar_Types()
+        {
+            cbCar_Type.Items.Clear();
+            DbContext.SetCarType();
+            foreach (var s in DbContext.CarTypes)
+                cbCar_Type.Items.Add(s);
+            cbCar_Type.DisplayMember = "Name";
         }
 
         private void cbVagon_SelectedValueChanged(object sender, EventArgs e)
@@ -163,5 +177,15 @@ namespace Railway.Forms
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            cbCar_Type.SelectedItem=null; 
+        }
+
+        private void cbDeparture_SelectedValueChanged(object sender, EventArgs e)
+        {
+            cbCar_Type.SelectedItem = null;
+        }
     }
 }

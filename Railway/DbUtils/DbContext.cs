@@ -381,15 +381,12 @@ namespace Railway.DbUtils
                 if (connection == null) return;
                 Stations.Clear();
                 connection.Open();
+     
+                string sql = "ticketservice.select_stations";
 
-                string sql = @"SELECT c1.[Id]
-      ,c1.[number]
-      ,c1.[Name] as StationName
-      ,c2.[Name] as CityName
-      ,c2.[Id] as CityId
-  FROM [Station] AS c1
-  JOIN City AS c2 ON c2.Id = c1.CityId";
                 SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) // построчно считываем данные
@@ -1114,8 +1111,9 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "SELECT  [id] FROM [railway2].[dbo].[TRAIN] as tr  WHERE tr.number = @Number and Convert(Date, tr.[departure]) = Convert(Date, @Date)";
+                string sql = "ticketservice.select_train_by_date";
                 SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter NumberParam = new SqlParameter
                 {
@@ -1126,7 +1124,8 @@ WHERE t.[routeId] = @RouteId
                 SqlParameter dateParam = new SqlParameter
                 {
                     ParameterName = "@Date",
-                    Value = date
+                    SqlDbType = SqlDbType.Date,
+                    Value = date.Date
                 };
 
                 command.Parameters.Add(NumberParam);
@@ -1173,7 +1172,9 @@ WHERE t.[routeId] = @RouteId
                 CarTypes.Clear();
                 connection.Open();
 
-                SqlCommand command = new SqlCommand("SELECT * FROM CAR_TYPE", connection);
+                SqlCommand command = new SqlCommand("select_car_types", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) // построчно считываем данные
@@ -1429,9 +1430,10 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "SELECT DISTINCT car_number from SEAT WHERE car_type_id = @car_type AND train_id =  @train_id";
+                string sql = "ticketservice.select_number_by_car_type";
                 SqlCommand command = new SqlCommand(sql, connection);
-                
+                command.CommandType = CommandType.StoredProcedure;
+
                 SqlParameter carParam = new SqlParameter
                 {
                     ParameterName = "@car_type",

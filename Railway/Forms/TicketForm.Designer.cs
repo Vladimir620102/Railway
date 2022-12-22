@@ -31,6 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TicketForm));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -43,13 +45,11 @@
             this.cbTrain = new System.Windows.Forms.ComboBox();
             this.cbCar_Type = new System.Windows.Forms.ComboBox();
             this.cbSeat = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.tbPassanger = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.cbVagon = new System.Windows.Forms.ComboBox();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.btOk = new System.Windows.Forms.Button();
             this.btCancel = new System.Windows.Forms.Button();
+            this.btOk = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +76,24 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(145, 320);
             this.panel2.TabIndex = 2;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(63, 219);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(79, 13);
+            this.label9.TabIndex = 11;
+            this.label9.Text = "Номер вагона";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(83, 290);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "Пассажир";
             // 
             // label7
             // 
@@ -149,6 +167,7 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(177, 20);
             this.dateTimePicker1.TabIndex = 3;
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // cbArrival
             // 
@@ -166,6 +185,7 @@
             this.cbDeparture.Name = "cbDeparture";
             this.cbDeparture.Size = new System.Drawing.Size(520, 21);
             this.cbDeparture.TabIndex = 6;
+            this.cbDeparture.SelectedValueChanged += new System.EventHandler(this.cbDeparture_SelectedValueChanged);
             // 
             // cbTrain
             // 
@@ -193,30 +213,12 @@
             this.cbSeat.Size = new System.Drawing.Size(176, 21);
             this.cbSeat.TabIndex = 9;
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(83, 290);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "Пассажир";
-            // 
             // tbPassanger
             // 
             this.tbPassanger.Location = new System.Drawing.Point(152, 334);
             this.tbPassanger.Name = "tbPassanger";
             this.tbPassanger.Size = new System.Drawing.Size(520, 20);
             this.tbPassanger.TabIndex = 10;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(63, 219);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(79, 13);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Номер вагона";
             // 
             // cbVagon
             // 
@@ -237,16 +239,6 @@
             this.panel3.Size = new System.Drawing.Size(703, 59);
             this.panel3.TabIndex = 12;
             // 
-            // btOk
-            // 
-            this.btOk.Location = new System.Drawing.Point(465, 20);
-            this.btOk.Name = "btOk";
-            this.btOk.Size = new System.Drawing.Size(75, 23);
-            this.btOk.TabIndex = 0;
-            this.btOk.Text = "Сохранить";
-            this.btOk.UseVisualStyleBackColor = true;
-            this.btOk.Click += new System.EventHandler(this.btOk_Click);
-            // 
             // btCancel
             // 
             this.btCancel.Location = new System.Drawing.Point(597, 20);
@@ -256,6 +248,16 @@
             this.btCancel.Text = "Отменить";
             this.btCancel.UseVisualStyleBackColor = true;
             this.btCancel.Click += new System.EventHandler(this.btCancel_Click);
+            // 
+            // btOk
+            // 
+            this.btOk.Location = new System.Drawing.Point(465, 20);
+            this.btOk.Name = "btOk";
+            this.btOk.Size = new System.Drawing.Size(75, 23);
+            this.btOk.TabIndex = 0;
+            this.btOk.Text = "Сохранить";
+            this.btOk.UseVisualStyleBackColor = true;
+            this.btOk.Click += new System.EventHandler(this.btOk_Click);
             // 
             // TicketForm
             // 
