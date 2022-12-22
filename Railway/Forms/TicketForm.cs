@@ -169,7 +169,12 @@ namespace Railway.Forms
                     Place = place
                 };
                 var ret = DbContext.AddTicket(ticket);
-                if (ret) MessageBox.Show("Билет выписан.");
+                if (ret)
+                {
+                    cbSeat.SelectedItem = null;
+                    cbSeat.Items.Remove(place);
+                    MessageBox.Show("Билет выписан.");
+                }
                 else MessageBox.Show("Билет не выписан.");
 
                 cbSeat.SelectedItem= null;
