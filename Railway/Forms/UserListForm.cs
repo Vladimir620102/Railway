@@ -16,5 +16,13 @@ namespace Railway.Forms
         {
             InitializeComponent();
         }
+
+        private void tsbNew_Click(object sender, EventArgs e)
+        {
+            UserDetailForm adf = new UserDetailForm();
+            if(adf.ShowDialog() != DialogResult.OK) return;
+
+
+        }
     }
 }

@@ -34,18 +34,18 @@
             this.btSave = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Lopgin = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Login = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Password = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tbUser = new System.Windows.Forms.TextBox();
+            this.tbLogin = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbPassword = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbEmail = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.tbPhone = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.checkAdmin = new System.Windows.Forms.CheckBox();
             this.panel3.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // panel3
@@ -53,16 +53,16 @@
             this.panel3.Controls.Add(this.btCancel);
             this.panel3.Controls.Add(this.btSave);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 384);
+            this.panel3.Location = new System.Drawing.Point(0, 260);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(945, 66);
-            this.panel3.TabIndex = 4;
+            this.panel3.Size = new System.Drawing.Size(475, 66);
+            this.panel3.TabIndex = 6;
             // 
             // btCancel
             // 
             this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btCancel.Location = new System.Drawing.Point(832, 19);
+            this.btCancel.Location = new System.Drawing.Point(362, 19);
             this.btCancel.Name = "btCancel";
             this.btCancel.Size = new System.Drawing.Size(75, 23);
             this.btCancel.TabIndex = 1;
@@ -73,7 +73,7 @@
             // 
             this.btSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btSave.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btSave.Location = new System.Drawing.Point(721, 19);
+            this.btSave.Location = new System.Drawing.Point(251, 19);
             this.btSave.Name = "btSave";
             this.btSave.Size = new System.Drawing.Size(75, 23);
             this.btSave.TabIndex = 0;
@@ -82,91 +82,118 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.checkAdmin);
+            this.panel1.Controls.Add(this.tbPhone);
+            this.panel1.Controls.Add(this.label5);
+            this.panel1.Controls.Add(this.tbEmail);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.tbPassword);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.tbLogin);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.tbUser);
             this.panel1.Controls.Add(this.label1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(945, 38);
-            this.panel1.TabIndex = 5;
+            this.panel1.Size = new System.Drawing.Size(475, 260);
+            this.panel1.TabIndex = 7;
             // 
             // label1
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(36, 28);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(945, 38);
+            this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Пользователь";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label1.Text = "ФИО";
             // 
-            // panel2
+            // tbUser
             // 
-            this.panel2.Controls.Add(this.dataGridView1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 38);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(945, 346);
-            this.panel2.TabIndex = 6;
+            this.tbUser.Location = new System.Drawing.Point(84, 25);
+            this.tbUser.Name = "tbUser";
+            this.tbUser.Size = new System.Drawing.Size(287, 20);
+            this.tbUser.TabIndex = 1;
             // 
-            // dataGridView1
+            // tbLogin
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Id,
-            this.Lopgin,
-            this.Login,
-            this.Password,
-            this.Email,
-            this.Phone});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(945, 346);
-            this.dataGridView1.TabIndex = 0;
+            this.tbLogin.Location = new System.Drawing.Point(84, 65);
+            this.tbLogin.Name = "tbLogin";
+            this.tbLogin.Size = new System.Drawing.Size(287, 20);
+            this.tbLogin.TabIndex = 3;
             // 
-            // Id
+            // label2
             // 
-            this.Id.HeaderText = "Id";
-            this.Id.Name = "Id";
-            this.Id.Visible = false;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(32, 68);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Логин";
             // 
-            // Lopgin
+            // tbPassword
             // 
-            this.Lopgin.HeaderText = "ФИО";
-            this.Lopgin.Name = "Lopgin";
-            this.Lopgin.Width = 300;
+            this.tbPassword.Location = new System.Drawing.Point(84, 105);
+            this.tbPassword.Name = "tbPassword";
+            this.tbPassword.Size = new System.Drawing.Size(287, 20);
+            this.tbPassword.TabIndex = 5;
             // 
-            // Login
+            // label3
             // 
-            this.Login.HeaderText = "Логин";
-            this.Login.Name = "Login";
-            this.Login.Width = 200;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(25, 108);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(45, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Пароль";
             // 
-            // Password
+            // tbEmail
             // 
-            this.Password.HeaderText = "Пароль";
-            this.Password.Name = "Password";
-            this.Password.Visible = false;
+            this.tbEmail.Location = new System.Drawing.Point(84, 145);
+            this.tbEmail.Name = "tbEmail";
+            this.tbEmail.Size = new System.Drawing.Size(287, 20);
+            this.tbEmail.TabIndex = 7;
             // 
-            // Email
+            // label4
             // 
-            this.Email.HeaderText = "Email";
-            this.Email.Name = "Email";
-            this.Email.Width = 200;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(35, 148);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "E-mail";
             // 
-            // Phone
+            // tbPhone
             // 
-            this.Phone.HeaderText = "Телефон";
-            this.Phone.Name = "Phone";
-            this.Phone.Width = 200;
+            this.tbPhone.Location = new System.Drawing.Point(84, 183);
+            this.tbPhone.Name = "tbPhone";
+            this.tbPhone.Size = new System.Drawing.Size(287, 20);
+            this.tbPhone.TabIndex = 9;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(18, 186);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Телефон";
+            // 
+            // checkAdmin
+            // 
+            this.checkAdmin.AutoSize = true;
+            this.checkAdmin.Location = new System.Drawing.Point(84, 223);
+            this.checkAdmin.Name = "checkAdmin";
+            this.checkAdmin.Size = new System.Drawing.Size(105, 17);
+            this.checkAdmin.TabIndex = 11;
+            this.checkAdmin.Text = "Администратор";
+            this.checkAdmin.UseVisualStyleBackColor = true;
             // 
             // UserDetailForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(945, 450);
-            this.Controls.Add(this.panel2);
+            this.ClientSize = new System.Drawing.Size(475, 326);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -174,8 +201,7 @@
             this.Text = "Пользователь";
             this.panel3.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -186,14 +212,16 @@
         private System.Windows.Forms.Button btCancel;
         private System.Windows.Forms.Button btSave;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Lopgin;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Login;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Password;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Email;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Phone;
+        public System.Windows.Forms.TextBox tbUser;
+        public System.Windows.Forms.TextBox tbLogin;
+        public System.Windows.Forms.TextBox tbPassword;
+        public System.Windows.Forms.TextBox tbEmail;
+        public System.Windows.Forms.TextBox tbPhone;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox checkAdmin;
     }
 }

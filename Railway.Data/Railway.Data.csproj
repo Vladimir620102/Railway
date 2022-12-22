@@ -50,6 +50,7 @@
     <Compile Include="Model\Station.cs" />
     <Compile Include="Model\Ticket.cs" />
     <Compile Include="Model\Train.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -67,6 +68,7 @@
     <Content Include="UpdateSQL\0011.sql" />
     <Content Include="UpdateSQL\0012.sql" />
     <Content Include="UpdateSQL\0013.sql" />
+    <Content Include="UpdateSQL\0014.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

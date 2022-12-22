@@ -161,6 +161,7 @@
     <Compile Include="Forms\UserListForm.Designer.cs">
       <DependentUpon>UserListForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Model\Helper.cs" />
     <Compile Include="Model\Ticket.cs" />
     <Compile Include="Program.cs" />
