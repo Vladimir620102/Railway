@@ -177,8 +177,7 @@ namespace Railway.Forms
                 }
                 else MessageBox.Show("Билет не выписан.");
 
-                cbSeat.SelectedItem= null;
-                cbSeat.Items.Remove(place); 
+                
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
