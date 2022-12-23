@@ -25,6 +25,8 @@ namespace Railway.DbUtils
         public static List<Train> Trains = new List<Train>();
         public static List<CarType> CarTypes = new List<CarType>();
         public static List<User> Users = new List<User>();
+        public static List<Tuple<int, int>> FreeSeates = new List<Tuple<int, int>>();
+
 
 
         static string _connectionString = Properties.Settings.Default.ConnectionString;
@@ -1588,6 +1590,60 @@ namespace Railway.DbUtils
             }
             return false;
         }
+
+        public static void SetFreeSeat(int trainId)
+        {
+
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "ticketservice.select_free_seat_by_train";
+
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter trainParam = new SqlParameter
+                {
+                    ParameterName = "@train_id",
+                    Value = trainId
+                };
+
+                command.Parameters.Add(trainParam);
+                FreeSeates.Clear();
+
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read()) // построчно считываем данные
+                {
+
+                    object number = reader.GetValue(0);
+                    object seatCount = reader.GetValue(1);
+                    
+                    int temp = (number == DBNull.Value ? 0 : (int)number);
+                    int count = (seatCount == DBNull.Value ? 0 : (int)seatCount);
+                    Tuple<int, int> tempTuple = new Tuple<int, int>(temp, count);
+                    FreeSeates.Add(tempTuple);
+                }
+                
+            }
+            catch (SqlException ex1)
+            {
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+
+        }
+
         #endregion Ticket
 
         public static bool AddUser(User u)

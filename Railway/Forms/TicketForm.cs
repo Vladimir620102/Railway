@@ -58,13 +58,39 @@ namespace Railway.Forms
                 }
                 cbTrain.DisplayMember = "Name";
                 cbCar_Type.SelectedItem = null;
+                SetFreeSeat();
             }
             catch(Exception ex) { MessageBox.Show(ex.Message); }    
         }
 
         private void cbTrain_SelectedValueChanged(object sender, EventArgs e)
         {
-            
+            SetFreeSeat();
+        }
+
+        void SetFreeSeat()
+        {
+            Route route = (Route)cbTrain.SelectedItem;
+            if (route == null) return;
+            if (GetTrainId(route) == -1) return;
+
+            DbContext.SetFreeSeat(currentTrainId);
+            dataGridView1.Rows.Clear();
+            foreach(var tuple in DbContext.FreeSeates)
+            {
+                dataGridView1.Rows.Add(tuple.Item1, tuple.Item2);
+            }
+
+        }
+
+        private int GetTrainId(Route route)
+        {
+            currentTrainId = DbContext.GetTrainId(route, dateTimePicker1.Value);
+            if (currentTrainId == -1)
+            {
+                MessageBox.Show($"{route.Name} на {dateTimePicker1.Value.ToShortDateString()} не найден");
+            }
+            return currentTrainId;
         }
 
         private void cbCar_Type_SelectedValueChanged(object sender, EventArgs e)
@@ -77,12 +103,8 @@ namespace Railway.Forms
                 Route route = (Route)cbTrain.SelectedItem;
                 if (route == null) return;
 
-                currentTrainId = DbContext.GetTrainId(route, dateTimePicker1.Value);
-                if (currentTrainId == -1)
-                {
-                    MessageBox.Show($"{route.Name} на {dateTimePicker1.Value.ToShortDateString()} не найден");
-                    return;
-                }
+                if (GetTrainId(route) == -1) return;
+                
                 var list = DbContext.SelectByCarType(currentTrainId, ct.Id);
                 if (list == null || list.Count == 0)
                 {
@@ -144,8 +166,20 @@ namespace Railway.Forms
             }
 
             // выписываем билет
-            try {
+            try
+            {
                 DateTime tickeDate = dateTimePicker1.Value;
+
+                if (cbDeparture.SelectedItem == null
+                    || cbArrival.SelectedItem == null
+                    || cbTrain.SelectedItem == null
+                    || cbVagon.SelectedItem == null
+                    || cbSeat.SelectedItem == null)
+                {
+                    MessageBox.Show("Не заполнены все реквизиты!");
+                    return;
+                }
+
                 string departureStationName = ((Station)cbDeparture.SelectedItem).Name;
                 int departureStationId = ((Station)cbDeparture.SelectedItem).Id;
                 int arrivalStationId = ((Station)cbArrival.SelectedItem).Id;
@@ -174,10 +208,10 @@ namespace Railway.Forms
                     cbSeat.SelectedItem = null;
                     cbSeat.Items.Remove(place);
                     MessageBox.Show("Билет выписан.");
+                    SetFreeSeat();
                 }
                 else MessageBox.Show("Билет не выписан.");
 
-                
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
             }
@@ -185,16 +219,13 @@ namespace Railway.Forms
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             cbCar_Type.SelectedItem=null; 
+            SetFreeSeat();
         }
 
         private void cbDeparture_SelectedValueChanged(object sender, EventArgs e)
         {
             cbCar_Type.SelectedItem = null;
-        }
-
-        private void cbDeparture_SelectedValueChanged_1(object sender, EventArgs e)
-        {
-
+            SetFreeSeat();
         }
     }
 }

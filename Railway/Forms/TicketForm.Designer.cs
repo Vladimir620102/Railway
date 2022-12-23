@@ -182,7 +182,7 @@
             this.cbDeparture.Name = "cbDeparture";
             this.cbDeparture.Size = new System.Drawing.Size(420, 21);
             this.cbDeparture.TabIndex = 14;
-            this.cbDeparture.SelectedValueChanged += new System.EventHandler(this.cbDeparture_SelectedValueChanged_1);
+            this.cbDeparture.SelectedValueChanged += new System.EventHandler(this.cbDeparture_SelectedValueChanged);
             // 
             // cbArrival
             // 
@@ -294,12 +294,14 @@
             // 
             this.Stock.HeaderText = "Вагон";
             this.Stock.Name = "Stock";
+            this.Stock.ReadOnly = true;
             this.Stock.Width = 70;
             // 
             // FreeSeat
             // 
             this.FreeSeat.HeaderText = "Свободно";
             this.FreeSeat.Name = "FreeSeat";
+            this.FreeSeat.ReadOnly = true;
             // 
             // TicketForm
             // 
