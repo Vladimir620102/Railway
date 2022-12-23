@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)">data source=DESKTOP-IQMJSCP;Initial Catalog=railway2;Integrated Security=True;Trusted_Connection=True</Value>
+      <Value Profile="(Default)">data source=DESKTOP-IQMJSCP;Initial Catalog=railway3;Integrated Security=True;Trusted_Connection=True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

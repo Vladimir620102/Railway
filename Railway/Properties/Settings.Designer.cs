@@ -25,7 +25,7 @@ namespace Railway.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=DESKTOP-IQMJSCP;Initial Catalog=railway2;Integrated Security=True;Tru" +
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=DESKTOP-IQMJSCP;Initial Catalog=railway3;Integrated Security=True;Tru" +
             "sted_Connection=True")]
         public string ConnectionString {
             get {
