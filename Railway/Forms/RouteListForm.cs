@@ -57,7 +57,7 @@ namespace Railway.Forms
                     route.Items.Add(ri);
                 }
 
-                DbContext.AddRoute(route);
+                // DbContext.AddRoute(route);
                 UpdateGrid();
             }
             catch(Exception ex)
