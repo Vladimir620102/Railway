@@ -183,6 +183,11 @@ namespace Railway.Forms
             {
                 var row = dataGridView1.CurrentRow;
                 if (row == null) return;
+                if (row.Cells["Id"].Value == null) 
+                {
+                    MessageBox.Show("Не заполнены все реквизиты");
+                    return;
+                }
                 int id = Convert.ToInt32(row.Cells["Id"].Value);
                 DbContext.DeleteRoute(id);
                 UpdateGrid();

@@ -138,6 +138,7 @@ namespace Railway.Forms
             }
             if (currentPosition > -1 && dataGridView1.Rows.Count > 0)
                 dataGridView1.CurrentCell = dataGridView1.Rows[currentPosition].Cells[2];
+            dataGridView1.Sort(dataGridView1.Columns["Arrived"], ListSortDirection.Ascending);
         }
 
         private void AddRouteItems(int stationId, DateTime arrivalDate, DateTime departureDate)

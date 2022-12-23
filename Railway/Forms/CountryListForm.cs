@@ -51,6 +51,11 @@ namespace Railway.Forms
         {
             var row = dataGridView1.CurrentRow;
             if (row == null) return;
+            if (row.Cells["CountryName"].Value == null)
+            {
+                MessageBox.Show("Не заполнены все реквизиты");
+                return;
+            }
             CountryItemForm cf = new CountryItemForm();
             cf.tbName.Text = ((string)row.Cells["CountryName"].Value).Trim();
             DialogResult dr = cf.ShowDialog();
@@ -70,6 +75,11 @@ namespace Railway.Forms
         {
             var row = dataGridView1.CurrentRow;
             if (row == null) return;
+            if (row.Cells["Id"].Value == null)
+            {
+                MessageBox.Show("Не заполнены все реквизиты");
+                return;
+            }
             int id = Convert.ToInt32(row.Cells["Id"].Value);
             DbContext.DeleteCountry(id);
             UpdateGrid();

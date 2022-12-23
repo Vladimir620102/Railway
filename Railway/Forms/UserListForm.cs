@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Railway.DbUtils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,7 +38,23 @@ namespace Railway.Forms
                 return;
             }
 
-
+        }
+        void UpdateGrid()
+        {
+            int currentPosition = -1;
+            if (dataGridView1.CurrentRow != null)
+            {
+                currentPosition = dataGridView1.CurrentRow.Index;
+            }
+            dataGridView1.Rows.Clear();
+            DbContext.SetUsers();
+            foreach (var s in DbContext.Users)
+            {
+                dataGridView1.Rows.Add(s.Id.ToString(), s.Name, s.Login, s.Password, s.Email, s.Phone);
+            }
+            dataGridView1.Sort(dataGridView1.Columns["Name"],ListSortDirection.Ascending);
+            if (currentPosition > -1 && dataGridView1.Rows.Count > 0)
+                dataGridView1.CurrentCell = dataGridView1.Rows[currentPosition].Cells[1];
         }
     }
 }

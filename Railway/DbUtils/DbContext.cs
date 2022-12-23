@@ -24,6 +24,8 @@ namespace Railway.DbUtils
         public static List<Route> Routes = new List<Route>();
         public static List<Train> Trains = new List<Train>();
         public static List<CarType> CarTypes = new List<CarType>();
+        public static List<User> Users = new List<User>();
+
 
         static string _connectionString = Properties.Settings.Default.ConnectionString;
 
@@ -38,10 +40,10 @@ namespace Railway.DbUtils
 
                 if (connection == null) return;
                 Countries.Clear();
-
-
                 connection.Open();
-                SqlCommand command = new SqlCommand("SELECT * FROM country", connection);
+                SqlCommand command = new SqlCommand("ticketservice.select_country", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) // построчно считываем данные
@@ -83,9 +85,9 @@ namespace Railway.DbUtils
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
                 string sql = "update_country";
-                //SqlCommand updateCommand = new SqlCommand("Update Country SET Name = @CountryName WHERE Id = @CountryId");
                 SqlCommand updateCommand = new SqlCommand(sql, connection);
-                updateCommand.CommandType = CommandType.StoredProcedure;    
+                updateCommand.CommandType = CommandType.StoredProcedure;  
+                
                 updateCommand.Parameters.Add("@country_name", SqlDbType.NVarChar, 255, "Name");
                 updateCommand.Parameters.Add("@country_id", SqlDbType.Int, sizeof(int), "Id");
                 updateCommand.Parameters[0].Value = countryName;
@@ -141,9 +143,9 @@ namespace Railway.DbUtils
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
                 string sql = "insert_country";
-                //SqlCommand insertCommand = new SqlCommand("INSERT INTO Country (Name) VALUES (@сountryName) ");
                 SqlCommand insertCommand = new SqlCommand(sql,connection);
                 insertCommand.CommandType= CommandType.StoredProcedure;
+
                 insertCommand.Parameters.Add("@country_name", SqlDbType.NVarChar, 255, "Name");
                 insertCommand.Parameters[0].Value = countryName;
                 
@@ -173,8 +175,10 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand deleteCommand = new SqlCommand("DELETE FROM Country WHERE Id =  @Id ");
-                deleteCommand.Parameters.Add("@Id", SqlDbType.Int, 255, "Id");
+                SqlCommand deleteCommand = new SqlCommand("delete_country");
+                deleteCommand.CommandType= CommandType.StoredProcedure;
+
+                deleteCommand.Parameters.Add("@id", SqlDbType.Int, 255, "Id");
                 deleteCommand.Parameters[0].Value = id;
                 deleteCommand.Connection = connection;
 
@@ -210,13 +214,9 @@ namespace Railway.DbUtils
                 Cities.Clear();
                 connection.Open();
 
-                string sql = @"SELECT c1.[Id]
-      ,c1.[Country]
-	  ,c2.[Name] as CountryName
-      ,c1.[Name] as CityName
-  FROM [CITY] AS c1
-  JOIN COUNTRY AS c2 ON c2.Id = c1.Country";
-                SqlCommand command = new SqlCommand(sql, connection);
+                SqlCommand command = new SqlCommand("ticketservice.select_cities", connection);
+                command.CommandType= CommandType.StoredProcedure;
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) // построчно считываем данные
@@ -258,10 +258,13 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand updateCommand = new SqlCommand("Update City SET Name = @CityName, Country = @CountryId WHERE Id = @CityId", connection);
-                updateCommand.Parameters.Add("@CityName", SqlDbType.NVarChar, 255, "Name");
-                updateCommand.Parameters.Add("@CountryId", SqlDbType.Int, sizeof(int), "Country");
-                updateCommand.Parameters.Add("@CityId", SqlDbType.Int, sizeof(int), "Id");
+                string sql = "update_city";
+                SqlCommand updateCommand = new SqlCommand(sql, connection);
+                updateCommand.CommandType=CommandType.StoredProcedure;
+
+                updateCommand.Parameters.Add("@city_name", SqlDbType.NVarChar, 255, "Name");
+                updateCommand.Parameters.Add("@country_id", SqlDbType.Int, sizeof(int), "Country");
+                updateCommand.Parameters.Add("@city_id", SqlDbType.Int, sizeof(int), "Id");
                 updateCommand.Parameters[0].Value = newCity.Name;
                 updateCommand.Parameters[1].Value = newCity.CountryId;
                 updateCommand.Parameters[2].Value = newCity.Id;
@@ -320,9 +323,11 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand insertCommand = new SqlCommand("INSERT INTO City (Country, Name) VALUES ( @CountryId, @CityName) ", connection);
-                insertCommand.Parameters.Add("@CountryId", SqlDbType.Int, sizeof(int), "Country");
-                insertCommand.Parameters.Add("@CityName", SqlDbType.NVarChar, 255, "Name");
+                SqlCommand insertCommand = new SqlCommand("insert_city", connection);
+                insertCommand.CommandType= CommandType.StoredProcedure;
+                
+                insertCommand.Parameters.Add("@country_id", SqlDbType.Int, sizeof(int), "Country");
+                insertCommand.Parameters.Add("@city_name", SqlDbType.NVarChar, 255, "Name");
                 insertCommand.Parameters[0].Value = countryId;
                 insertCommand.Parameters[1].Value = cityName;
 
@@ -352,8 +357,10 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand deleteCommand = new SqlCommand("DELETE FROM City WHERE Id =  @Id ");
-                deleteCommand.Parameters.Add("@Id", SqlDbType.Int, 255, "Id");
+                SqlCommand deleteCommand = new SqlCommand("delete_city");
+                deleteCommand.CommandType = CommandType.StoredProcedure;
+
+                deleteCommand.Parameters.Add("@id", SqlDbType.Int, 255, "Id");
                 deleteCommand.Parameters[0].Value = id;
                 deleteCommand.Connection = connection;
 
@@ -437,11 +444,13 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand updateCommand = new SqlCommand("Update Station SET Number = @StationNumber, Name = @StationName, City = @CityId WHERE Id = @StationId", connection);
-                updateCommand.Parameters.Add("@StationNumber", SqlDbType.Int, sizeof(int), "Number");
-                updateCommand.Parameters.Add("@StationName", SqlDbType.NVarChar, 255, "Name");
-                updateCommand.Parameters.Add("@CityId", SqlDbType.Int, sizeof(int), "CityId");
-                updateCommand.Parameters.Add("@StationId", SqlDbType.Int, sizeof(int), "Id");
+                
+                SqlCommand updateCommand = new SqlCommand("update_station", connection);
+                updateCommand.CommandType= CommandType.StoredProcedure;
+                updateCommand.Parameters.Add("@station_number", SqlDbType.Int, sizeof(int), "Number");
+                updateCommand.Parameters.Add("@station_name", SqlDbType.NVarChar, 255, "Name");
+                updateCommand.Parameters.Add("@city_id", SqlDbType.Int, sizeof(int), "CityId");
+                updateCommand.Parameters.Add("@statio_id", SqlDbType.Int, sizeof(int), "Id");
                 updateCommand.Parameters[0].Value = newStation.Number;
                 updateCommand.Parameters[1].Value = newStation.Name;
                 updateCommand.Parameters[2].Value = newStation.CityId;
@@ -482,10 +491,12 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand insertCommand = new SqlCommand("INSERT INTO Station (number, name, cityId) VALUES ( @StationNumber, @StationName, @CityId) ", connection);
-                insertCommand.Parameters.Add("@StationNumber", SqlDbType.Int, sizeof(int), "StationNumber");
-                insertCommand.Parameters.Add("@StationName", SqlDbType.NVarChar, 255, "Name");
-                insertCommand.Parameters.Add("@CityId", SqlDbType.Int, sizeof(int), "CityId");
+                SqlCommand insertCommand = new SqlCommand("insert_station", connection);
+                insertCommand.CommandType = CommandType.StoredProcedure;
+
+                insertCommand.Parameters.Add("@station_number", SqlDbType.Int, sizeof(int), "StationNumber");
+                insertCommand.Parameters.Add("@station_name", SqlDbType.NVarChar, 255, "Name");
+                insertCommand.Parameters.Add("@city_id", SqlDbType.Int, sizeof(int), "CityId");
                 insertCommand.Parameters[0].Value = number;
                 insertCommand.Parameters[1].Value = stationName;
                 insertCommand.Parameters[2].Value = cityId;
@@ -516,8 +527,10 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand deleteCommand = new SqlCommand("DELETE FROM Station WHERE Id =  @Id ");
-                deleteCommand.Parameters.Add("@Id", SqlDbType.Int, 255, "Id");
+                SqlCommand deleteCommand = new SqlCommand("delete_station");
+                deleteCommand.Parameters.Add("@id", SqlDbType.Int, 255, "Id");
+                deleteCommand.CommandType=CommandType.StoredProcedure;
+
                 deleteCommand.Parameters[0].Value = id;
                 deleteCommand.Connection = connection;
 
@@ -563,17 +576,9 @@ namespace Railway.DbUtils
                 Routes.Clear();
                 connection.Open();
 
-                string sql = @"SELECT r.[Id]
-      ,r.[number]
-      ,r.[from_station_id]
-	  ,s0.name
-      ,r.[to_station_id]
-	  ,s1.name
-FROM [ROUTE] r
-JOIN Station as s0 on s0.id = r.from_station_id
-JOIN Station as s1 on s1.id = r.to_station_id
- ";
+                string sql = "ticketservice.select_routes";
                 SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read()) // построчно считываем данные
@@ -630,15 +635,11 @@ JOIN Station as s1 on s1.id = r.to_station_id
                 if (connection == null) return null;
                 connection.Open();
 
-                string sql = @"SELECT r.route_Id
-      ,r.station_id
-	  ,r.arrival_time
-      ,r.departure_time
-FROM [ROUTE_SCEDULE] r
-WHERE r.route_id = @RouteId
- ";
+                string sql = @"ticketservice.select_route_scedule";
                 SqlCommand command = new SqlCommand(sql, connection);
-                command.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Route_Id");
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "Route_Id");
                 command.Parameters[0].Value = routeId;
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -686,13 +687,12 @@ WHERE r.route_id = @RouteId
                 connection.Open();
                 transaction = connection.BeginTransaction();
 
-                string sql = "INSERT INTO Route (number, from_station_id, to_station_id) VALUES ( @Number, @DepartureName, @ArrivalName)";
-
+                string sql = "insert_route";
                 SqlCommand insertCommand = new SqlCommand(sql, connection);
-
-                insertCommand.Parameters.Add("@Number", SqlDbType.Int, sizeof(int), "Number");
-                insertCommand.Parameters.Add("@DepartureName", SqlDbType.NVarChar, 255, "from_station_id");
-                insertCommand.Parameters.Add("@ArrivalName", SqlDbType.NVarChar, 255, "to_station_id");
+                insertCommand.CommandType = CommandType.StoredProcedure;
+                insertCommand.Parameters.Add("@number", SqlDbType.Int, sizeof(int), "Number");
+                insertCommand.Parameters.Add("@from_station_id", SqlDbType.NVarChar, 255, "from_station_id");
+                insertCommand.Parameters.Add("@to_station_id", SqlDbType.NVarChar, 255, "to_station_id");
                 insertCommand.Parameters[0].Value = route.Number;
                 insertCommand.Parameters[1].Value = route.DepartureStationId;
                 insertCommand.Parameters[2].Value = route.ArrivalStationId;
@@ -725,27 +725,16 @@ WHERE r.route_id = @RouteId
         }
         static void AddSceduleRoute(SqlConnection conn, SqlTransaction transaction, Route route)
         {
-            /*
-             * [route_id]
-      ,[station_id]
-      ,[arrival_time]
-      ,[departure_time]
-             * */
-            string sql = "INSERT INTO ROUTE_SCEDULE (route_id, station_id, arrival_time, departure_time) VALUES ( @RouteId, @StationId, @ArrivalTime, @DepartureTime)";
+      
+            SqlCommand insertCommand = new SqlCommand("insert_route_scedule", conn);
+            insertCommand.CommandType= CommandType.StoredProcedure;
 
-            SqlCommand insertCommand = new SqlCommand(sql, conn);
-
-            insertCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Route_id");
-            insertCommand.Parameters.Add("@StationId", SqlDbType.Int, sizeof(int), "Station_Id");
-            insertCommand.Parameters.Add("@ArrivalTime", SqlDbType.DateTime, 32, "Arrival_time");
-            insertCommand.Parameters.Add("@DepartureTime", SqlDbType.DateTime, 32, "Departure_Time");
-
-
-
+            insertCommand.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "Route_id");
+            insertCommand.Parameters.Add("@station_id", SqlDbType.Int, sizeof(int), "Station_Id");
+            insertCommand.Parameters.Add("@arrival_time", SqlDbType.DateTime, 32, "Arrival_time");
+            insertCommand.Parameters.Add("@departure_time", SqlDbType.DateTime, 32, "Departure_Time");
 
             insertCommand.Transaction = transaction;
-
-
 
             foreach (var item in route.Items)
             {
@@ -766,10 +755,9 @@ WHERE r.route_id = @RouteId
         static void DeleteSceduleRoute(SqlConnection conn, SqlTransaction transaction, int routeId)
         {
 
-            string sql = "DELETE FROM [ROUTE_SCEDULE] WHERE Route_Id = @RouteId";
-
-            SqlCommand deleteCommand = new SqlCommand(sql, conn);
-            deleteCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Route_Id");
+            SqlCommand deleteCommand = new SqlCommand("delete_route_scedule", conn);
+            deleteCommand.CommandType= CommandType.StoredProcedure;
+            deleteCommand.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "Route_Id");
             deleteCommand.Parameters[0].Value = routeId;
             deleteCommand.Transaction = transaction;
 
@@ -809,14 +797,14 @@ WHERE r.route_id = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "Update ROUTE SET Number = @Number, from_station_id = @DepartureStationId, to_station_id = @ArrivalStationId WHERE Id = @RouteId";
-                SqlCommand updateCommand = new SqlCommand(sql, connection);
+                SqlCommand updateCommand = new SqlCommand("update_route", connection);
+                updateCommand.CommandType = CommandType.StoredProcedure;
                 transaction = connection.BeginTransaction();
 
-                updateCommand.Parameters.Add("@Number", SqlDbType.Int, sizeof(int), "Number");
-                updateCommand.Parameters.Add("@DepartureStationId", SqlDbType.Int, sizeof(int), "from_station_id");
-                updateCommand.Parameters.Add("@ArrivalStationId", SqlDbType.Int, sizeof(int), "to_station_id");
-                updateCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Id");
+                updateCommand.Parameters.Add("@number", SqlDbType.Int, sizeof(int), "Number");
+                updateCommand.Parameters.Add("@from_station_id", SqlDbType.Int, sizeof(int), "from_station_id");
+                updateCommand.Parameters.Add("@to_station_id", SqlDbType.Int, sizeof(int), "to_station_id");
+                updateCommand.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "Id");
 
                 updateCommand.Parameters[0].Value = route.Number;
                 updateCommand.Parameters[1].Value = route.DepartureStationId;
@@ -862,11 +850,12 @@ WHERE r.route_id = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "DELETE from ROUTE WHERE Id = @RouteId";
-                SqlCommand deleteCommand = new SqlCommand(sql, connection);
+                SqlCommand deleteCommand = new SqlCommand("delete_route", connection);
+                deleteCommand.CommandType = CommandType.StoredProcedure;
+
                 transaction = connection.BeginTransaction();
 
-                deleteCommand.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Id");
+                deleteCommand.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "Id");
                 deleteCommand.Parameters[0].Value = routeId;
 
                 deleteCommand.Transaction = transaction;
@@ -910,24 +899,11 @@ WHERE r.route_id = @RouteId
                 Trains.Clear();
                 connection.Open();
 
-                string sql = @"SELECT t.[id] as Id
-      ,t.[number]   as Number
-      ,t.[from_station_id] as from_station_id
-        ,dep.Name as depName
-      ,t.[to_station_id] as to_station_id
-        ,arr.Name as arrName
-      ,t.[departure] as departure
-      ,t.[arrival] as arrival
-
-FROM [TRAIN] t
-JOIN Station as dep on dep.Id = t.[from_station_id]
-join station as arr ON arr.Id = t.[to_station_id]
-
-WHERE t.[routeId] = @RouteId
- ";
+                string sql = @"ticketservice.select_trains";
                 SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.Add("@RouteId", SqlDbType.Int, sizeof(int), "Id");
+                command.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "Id");
                 command.Parameters[0].Value = routeId;
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -1221,17 +1197,17 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "INSERT INTO CAR_TYPE (Name, Capacity) VALUES (@Name, @Capacity)";
-                SqlCommand command = new SqlCommand(sql, connection);
+                SqlCommand command = new SqlCommand("insert_car_type", connection);
+                command.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter nameParam = new SqlParameter
                 {
-                    ParameterName = "@Name",
+                    ParameterName = "@name",
                     Value = carType.Name
                 };
                 SqlParameter capacityParam = new SqlParameter
                 {
-                    ParameterName = "@Capacity",
+                    ParameterName = "@capacity",
                     Value = carType.Capacity
                 };
                 command.Parameters.Add(nameParam);
@@ -1269,22 +1245,22 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "Update CAR_TYPE set Name = @Name, Capacity = @Capacity where Id = @Id";
-                SqlCommand command = new SqlCommand(sql, connection);
+                SqlCommand command = new SqlCommand("update_car_type", connection);
+                command.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter nameParam = new SqlParameter
                 {
-                    ParameterName = "@Name",
+                    ParameterName = "@name",
                     Value = carType.Name
                 };
                 SqlParameter capacityParam = new SqlParameter
                 {
-                    ParameterName = "@Capacity",
+                    ParameterName = "@capacity",
                     Value = carType.Capacity
                 };
                 SqlParameter idParam = new SqlParameter
                 {
-                    ParameterName = "@Id",
+                    ParameterName = "@id",
                     Value = carType.Id
                 };
 
@@ -1324,9 +1300,8 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql = "DELETE FROM CAR_TYPE where Id = @Id";
-                SqlCommand command = new SqlCommand(sql, connection);
-
+                SqlCommand command = new SqlCommand("delete_car_type", connection);
+                command.CommandType = CommandType.StoredProcedure;
                 SqlParameter idParam = new SqlParameter
                 {
                     ParameterName = "@Id",
@@ -1369,11 +1344,12 @@ WHERE t.[routeId] = @RouteId
             try
             {
                 //@departure_id int,                 @arrival_id int
-                            connection = new SqlConnection(_connectionString);
+                connection = new SqlConnection(_connectionString);
                 connection.Open();
                 string sql = "ticketservice.select_route_by_stations";
                 SqlCommand command = new SqlCommand(sql, connection);
                 command.CommandType = CommandType.StoredProcedure;
+               
                 SqlParameter fromParam = new SqlParameter
                 {
                     ParameterName = "@departure_id",
@@ -1491,14 +1467,10 @@ WHERE t.[routeId] = @RouteId
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                string sql =
-@"SELECT s.seat_number FROM seat s
-WHERE s.train_id = @train_id and s.car_number = @car_number
-AND NOT EXISTS( SELECT 1 FROM TICKET t1 where t1.train_id = @train_id and t1.seat_id = s.id)
-";
+                string sql ="ticketservice.select_sear_number_by_car_type";
 
                 SqlCommand command = new SqlCommand(sql, connection);
-
+                command.CommandType = CommandType.StoredProcedure;
                 
                 SqlParameter carParam = new SqlParameter
                 {
@@ -1694,5 +1666,9 @@ AND NOT EXISTS( SELECT 1 FROM TICKET t1 where t1.train_id = @train_id and t1.sea
 
         }
 
+        internal static void SetUsers()
+        {
+            // throw new NotImplementedException();
+        }
     }
 }

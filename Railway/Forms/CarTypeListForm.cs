@@ -60,6 +60,11 @@ namespace Railway.Forms
             {
                 var row = dataGridView1.CurrentRow;
                 if (row == null) return;
+                if (row.Cells["Id"].Value == null)
+                {
+                    MessageBox.Show("Не заполнены все реквизиты");
+                    return;
+                }
                 CarTypeDetailForm detailForm = new CarTypeDetailForm();
 
                 var id = Convert.ToInt32(row.Cells["Id"].Value);
@@ -91,6 +96,11 @@ namespace Railway.Forms
             {
                 var row = dataGridView1.CurrentRow;
                 if (row == null) return;
+                if (row.Cells["Id"].Value == null)
+                {
+                    MessageBox.Show("Не заполнены все реквизиты");
+                    return;
+                }
                 var id = Convert.ToInt32(row.Cells["Id"].Value);
 
                 DbContext.DeleteCarType(id);
