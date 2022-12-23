@@ -77,6 +77,7 @@
     <Content Include="UpdateSQL\0020.sql" />
     <Content Include="UpdateSQL\0021.sql" />
     <Content Include="UpdateSQL\0022.sql" />
+    <Content Include="UpdateSQL\0023.sql" />
     <Content Include="UpdateSQL\railway3.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
