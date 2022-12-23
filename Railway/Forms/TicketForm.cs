@@ -64,8 +64,7 @@ namespace Railway.Forms
 
         private void cbTrain_SelectedValueChanged(object sender, EventArgs e)
         {
-            //if (cbTrain.SelectedItem != null)
-            //    currentTrain = (Train)cbTrain.SelectedItem;
+            
         }
 
         private void cbCar_Type_SelectedValueChanged(object sender, EventArgs e)
@@ -126,6 +125,7 @@ namespace Railway.Forms
                 {
                     cbSeat.Items.Add(t);
                 }
+                
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
@@ -190,6 +190,11 @@ namespace Railway.Forms
         private void cbDeparture_SelectedValueChanged(object sender, EventArgs e)
         {
             cbCar_Type.SelectedItem = null;
+        }
+
+        private void cbDeparture_SelectedValueChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
