@@ -10,10 +10,10 @@ namespace Railway.Data.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string login { get; set; }
-        public string password { get; set; }
-        public string phone { get; set; }
-        public string email { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
+        public string Phone { get; set; }
+        public string Email { get; set; }
         public bool IsAdmin { get; set; }
     }
 }

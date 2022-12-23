@@ -10,7 +10,8 @@ using System.Windows.Forms;
 using Railway.Properties;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Xml.Linq;
-using Railway.Model;
+using System.Security.AccessControl;
+using System.Net.Http.Headers;
 
 namespace Railway.DbUtils
 {
@@ -81,9 +82,12 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand updateCommand = new SqlCommand("Update Country SET Name = @CountryName WHERE Id = @CountryId");
-                updateCommand.Parameters.Add("@CountryName", SqlDbType.NVarChar, 255, "Name");
-                updateCommand.Parameters.Add("@CountryId", SqlDbType.Int, sizeof(int), "Id");
+                string sql = "update_country";
+                //SqlCommand updateCommand = new SqlCommand("Update Country SET Name = @CountryName WHERE Id = @CountryId");
+                SqlCommand updateCommand = new SqlCommand(sql, connection);
+                updateCommand.CommandType = CommandType.StoredProcedure;    
+                updateCommand.Parameters.Add("@country_name", SqlDbType.NVarChar, 255, "Name");
+                updateCommand.Parameters.Add("@country_id", SqlDbType.Int, sizeof(int), "Id");
                 updateCommand.Parameters[0].Value = countryName;
                 updateCommand.Parameters[1].Value = countryId;
                 updateCommand.Connection = connection;
@@ -136,10 +140,13 @@ namespace Railway.DbUtils
             {
                 connection = new SqlConnection(_connectionString);
                 connection.Open();
-                SqlCommand insertCommand = new SqlCommand("INSERT INTO Country (Name) VALUES (@CountryName) ");
-                insertCommand.Parameters.Add("@CountryName", SqlDbType.NVarChar, 255, "Name");
+                string sql = "insert_country";
+                //SqlCommand insertCommand = new SqlCommand("INSERT INTO Country (Name) VALUES (@сountryName) ");
+                SqlCommand insertCommand = new SqlCommand(sql,connection);
+                insertCommand.CommandType= CommandType.StoredProcedure;
+                insertCommand.Parameters.Add("@country_name", SqlDbType.NVarChar, 255, "Name");
                 insertCommand.Parameters[0].Value = countryName;
-                insertCommand.Connection = connection;
+                
                 var count = insertCommand.ExecuteNonQuery();
                 return count > 0;
             }
@@ -1172,7 +1179,7 @@ WHERE t.[routeId] = @RouteId
                 CarTypes.Clear();
                 connection.Open();
 
-                SqlCommand command = new SqlCommand("select_car_types", connection);
+                SqlCommand command = new SqlCommand("ticketservice.select_car_types", connection);
                 command.CommandType = CommandType.StoredProcedure;
 
                 SqlDataReader reader = command.ExecuteReader();
@@ -1354,8 +1361,8 @@ WHERE t.[routeId] = @RouteId
         }
             #endregion CarType
 
-            #region Ticket
-            public static List<Route> SelectTrainForTicket(int fromStationId, int toStationId)
+        #region Ticket
+        public static List<Route> SelectTrainForTicket(int fromStationId, int toStationId)
         {
             List<Route> list = new List<Route>();
             SqlConnection connection = null;
@@ -1610,6 +1617,82 @@ AND NOT EXISTS( SELECT 1 FROM TICKET t1 where t1.train_id = @train_id and t1.sea
             return false;
         }
         #endregion Ticket
+
+        public static bool AddUser(User u)
+        {
+            SqlTransaction transaction = null;
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(_connectionString);
+                connection.Open();
+                string sql = "insert_user";
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter nameParam = new SqlParameter
+                {
+                    ParameterName = "@Name",
+                    Value = u.Name
+                };
+                SqlParameter loginParam = new SqlParameter
+                {
+                    ParameterName = "@Login",
+                    Value = u.Login
+                };
+                SqlParameter passwordParam = new SqlParameter
+                {
+                    ParameterName = "@Password",
+                    Value = u.Password
+                };
+                SqlParameter emailParam = new SqlParameter
+                {
+                    ParameterName = "@Email",
+                    Value = u.Email
+                };
+                SqlParameter phoneParam = new SqlParameter
+                {
+                    ParameterName = "@Phone",
+                    Value = u.Phone
+                };
+                SqlParameter isAdminParam = new SqlParameter
+                {
+                    ParameterName = "@IsAdmin",
+                    Value = u.IsAdmin,
+                    SqlDbType=SqlDbType.Bit
+                };
+
+                command.Parameters.Add(nameParam);
+                command.Parameters.Add(loginParam);
+                command.Parameters.Add(passwordParam);
+                command.Parameters.Add(emailParam);
+                command.Parameters.Add(phoneParam);
+                command.Parameters.Add(isAdminParam);
+
+                transaction = connection.BeginTransaction();
+                command.Transaction = transaction;
+
+                var count = command.ExecuteNonQuery();
+                transaction.Commit();
+                return count > 0;
+            }
+            catch (SqlException ex1)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex1.Message);
+            }
+            catch (Exception ex2)
+            {
+                MessageBox.Show(ex2.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
+            return false;
+
+        }
 
     }
 }

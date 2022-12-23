@@ -73,5 +73,11 @@ namespace Railway
             CarTypeListForm carTypeListForm=new CarTypeListForm();
             carTypeListForm.ShowDialog();   
         }
+
+        private void пользователиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UserListForm userListForm = new UserListForm();
+            userListForm.ShowDialog();
+        }
     }
 }

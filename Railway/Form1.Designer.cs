@@ -42,6 +42,7 @@
             this.типВагонаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.маршрутToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.поездаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.пользователиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,7 +104,8 @@
             this.станцииToolStripMenuItem,
             this.типВагонаToolStripMenuItem,
             this.маршрутToolStripMenuItem,
-            this.поездаToolStripMenuItem});
+            this.поездаToolStripMenuItem,
+            this.пользователиToolStripMenuItem});
             this.справочникиToolStripMenuItem.Name = "справочникиToolStripMenuItem";
             this.справочникиToolStripMenuItem.Size = new System.Drawing.Size(94, 20);
             this.справочникиToolStripMenuItem.Text = "Справочники";
@@ -150,6 +152,13 @@
             this.поездаToolStripMenuItem.Text = "Поезда";
             this.поездаToolStripMenuItem.Click += new System.EventHandler(this.поездаToolStripMenuItem_Click);
             // 
+            // пользователиToolStripMenuItem
+            // 
+            this.пользователиToolStripMenuItem.Name = "пользователиToolStripMenuItem";
+            this.пользователиToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.пользователиToolStripMenuItem.Text = "Пользователи";
+            this.пользователиToolStripMenuItem.Click += new System.EventHandler(this.пользователиToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -184,6 +193,7 @@
         private System.Windows.Forms.ToolStripMenuItem типВагонаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem маршрутToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem поездаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem пользователиToolStripMenuItem;
     }
 }
 

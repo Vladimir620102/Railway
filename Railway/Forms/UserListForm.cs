@@ -20,7 +20,22 @@ namespace Railway.Forms
         private void tsbNew_Click(object sender, EventArgs e)
         {
             UserDetailForm adf = new UserDetailForm();
-            if(adf.ShowDialog() != DialogResult.OK) return;
+            if (adf.ShowDialog() != DialogResult.OK) return;
+
+            string name = adf.tbUser.Text;
+            string login = adf.tbLogin.Text;
+            string password = adf.tbPassword.Text;
+            string email = adf.tbEmail.Text;
+            string phone = adf.tbPhone.Text;
+            bool isAdmin = adf.checkAdmin.Checked;
+
+            if (string.IsNullOrWhiteSpace(name)
+                || string.IsNullOrWhiteSpace(login)
+                || string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Не заполнены обязательные поля!");
+                return;
+            }
 
 
         }

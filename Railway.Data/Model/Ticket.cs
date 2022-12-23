@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Railway.Data.Model
 {
-    internal class Ticket
+    public class Ticket
     {
         public long Id { get; set; }
         public DateTime DepartureDate { get; set; }
