@@ -695,6 +695,8 @@ namespace Railway.DbUtils
                 insertCommand.Parameters.Add("@number", SqlDbType.Int, sizeof(int), "Number");
                 insertCommand.Parameters.Add("@from_station_id", SqlDbType.NVarChar, 255, "from_station_id");
                 insertCommand.Parameters.Add("@to_station_id", SqlDbType.NVarChar, 255, "to_station_id");
+                insertCommand.Parameters.Add("@route_id", SqlDbType.Int, sizeof(int), "RouteId").Direction = ParameterDirection.Output;
+
                 insertCommand.Parameters[0].Value = route.Number;
                 insertCommand.Parameters[1].Value = route.DepartureStationId;
                 insertCommand.Parameters[2].Value = route.ArrivalStationId;
@@ -702,7 +704,8 @@ namespace Railway.DbUtils
                 insertCommand.Transaction = transaction;
 
                 var count = insertCommand.ExecuteNonQuery();
-
+                int routeId = Convert.ToInt32(insertCommand.Parameters["@route_id"].Value);
+                route.Id = routeId;
                 AddSceduleRoute(connection, transaction, route);
 
                 transaction.Commit();
